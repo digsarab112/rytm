@@ -61,7 +61,7 @@ temporarily while developing, set all of these:
 ```bash
 ADMIN_PASSWORD_LOGIN_ENABLED=true
 ADMIN_EMAIL=owner@example.com
-ADMIN_PASSWORD=temporary-local-password
+ADMIN_PASSWORD=
 ```
 
 Never enable password admin login in production.

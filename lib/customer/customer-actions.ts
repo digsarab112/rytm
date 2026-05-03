@@ -1,24 +1,38 @@
 "use server";
 
-import { createHash } from "crypto";
+import { createHash, randomBytes } from "crypto";
 
 import { getPrismaClient, isDatabaseConfigured } from "@/lib/db/prisma";
+import { sendEmailNotification } from "@/lib/integrations/email";
+import {
+  buildPasswordResetEmail,
+  buildWelcomeEmail,
+} from "@/lib/notifications/email-templates";
+import type { Locale } from "@/lib/i18n/config";
 import type { CustomerSession } from "@/types/customer";
 
 type CustomerInput = {
   name?: string;
   email: string;
   password: string;
+  locale?: Locale;
 };
 
 type CustomerAuthResult =
   | { ok: true; session: CustomerSession }
   | { ok: false; error: "exists" | "missing" | "invalid" | "weak" | "fallback" };
 
+type PasswordResetRequestResult = { ok: true };
+
+type PasswordResetResult =
+  | { ok: true }
+  | { ok: false; error: "invalid" | "weak" | "fallback" };
+
 export async function registerCustomerAccount({
   name = "",
   email,
   password,
+  locale = "uk",
 }: CustomerInput): Promise<CustomerAuthResult> {
   if (!isDatabaseConfigured()) {
     return { ok: false, error: "fallback" };
@@ -43,10 +57,17 @@ export async function registerCustomerAccount({
       email: normalizedEmail,
       name: name.trim(),
       passwordHash: hashCustomerPassword(password),
+      locale,
       profile: {
         create: {},
       },
     },
+  });
+
+  await sendWelcomeCustomerEmail({
+    email: customer.email,
+    name: customer.name,
+    locale,
   });
 
   return { ok: true, session: createSession(customer) };
@@ -266,6 +287,103 @@ export async function updateCustomerProfileData({
   return { ok: true as const };
 }
 
+export async function requestCustomerPasswordReset({
+  email,
+  locale = "uk",
+}: {
+  email: string;
+  locale?: Locale;
+}): Promise<PasswordResetRequestResult> {
+  if (!isDatabaseConfigured()) {
+    return { ok: true };
+  }
+
+  const prisma = getPrismaClient();
+  const normalizedEmail = normalizeEmail(email);
+  const customer = await prisma.customer.findUnique({
+    where: { email: normalizedEmail },
+  });
+
+  if (!customer?.passwordHash || !customer.isActive) {
+    return { ok: true };
+  }
+
+  const token = randomBytes(32).toString("hex");
+  const expiresInMinutes = 60;
+  await prisma.customerPasswordResetToken.deleteMany({
+    where: {
+      customerId: customer.id,
+      OR: [{ usedAt: { not: null } }, { expiresAt: { lt: new Date() } }],
+    },
+  });
+  await prisma.customerPasswordResetToken.create({
+    data: {
+      customerId: customer.id,
+      tokenHash: hashPasswordResetToken(token),
+      expiresAt: new Date(Date.now() + expiresInMinutes * 60 * 1000),
+    },
+  });
+
+  const template = buildPasswordResetEmail({
+    email: customer.email,
+    name: customer.name,
+    locale: customer.locale === "ru" ? "ru" : locale,
+    resetUrl: createCustomerPasswordResetUrl(token, locale),
+    expiresInMinutes,
+  });
+  await sendEmailNotification({
+    to: customer.email,
+    subject: template.subject,
+    text: template.text,
+    html: template.html,
+  });
+
+  return { ok: true };
+}
+
+export async function resetCustomerPassword({
+  token,
+  password,
+}: {
+  token: string;
+  password: string;
+}): Promise<PasswordResetResult> {
+  if (!isDatabaseConfigured()) {
+    return { ok: false, error: "fallback" };
+  }
+
+  if (password.length < 6) {
+    return { ok: false, error: "weak" };
+  }
+
+  const prisma = getPrismaClient();
+  const resetToken = await prisma.customerPasswordResetToken.findFirst({
+    where: {
+      tokenHash: hashPasswordResetToken(token),
+      usedAt: null,
+      expiresAt: { gt: new Date() },
+    },
+    include: { customer: true },
+  });
+
+  if (!resetToken?.customer?.isActive) {
+    return { ok: false, error: "invalid" };
+  }
+
+  await prisma.$transaction([
+    prisma.customer.update({
+      where: { id: resetToken.customerId },
+      data: { passwordHash: hashCustomerPassword(password) },
+    }),
+    prisma.customerPasswordResetToken.updateMany({
+      where: { customerId: resetToken.customerId, usedAt: null },
+      data: { usedAt: new Date() },
+    }),
+  ]);
+
+  return { ok: true };
+}
+
 function createSession(customer: { id: string; name: string | null; email: string }) {
   return {
     customerId: customer.id,
@@ -283,4 +401,51 @@ function hashCustomerPassword(password: string) {
   return createHash("sha256")
     .update(`rytm-customer-dev:${password}`)
     .digest("hex");
+}
+
+function hashPasswordResetToken(token: string) {
+  return createHash("sha256")
+    .update(`rytm-reset:${token}`)
+    .digest("hex");
+}
+
+async function sendWelcomeCustomerEmail({
+  email,
+  name,
+  locale,
+}: {
+  email: string;
+  name: string | null;
+  locale: Locale;
+}) {
+  const template = buildWelcomeEmail({
+    email,
+    name,
+    locale,
+    accountUrl: `${getPublicAppUrl()}/account?locale=${locale}`,
+  });
+  await sendEmailNotification({
+    to: email,
+    subject: template.subject,
+    text: template.text,
+    html: template.html,
+  });
+}
+
+function createCustomerPasswordResetUrl(token: string, locale: Locale) {
+  const url = new URL("/auth/reset-password", getPublicAppUrl());
+
+  url.searchParams.set("token", token);
+  url.searchParams.set("locale", locale);
+
+  return url.toString();
+}
+
+function getPublicAppUrl() {
+  return (
+    process.env.AUTH_URL ||
+    process.env.NEXTAUTH_URL ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    "http://localhost:3000"
+  ).replace(/\/$/, "");
 }

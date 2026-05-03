@@ -75,6 +75,9 @@ npm run build
 - Password admin login is disabled in production. A password fallback can be
   enabled only for temporary local troubleshooting with
   `ADMIN_PASSWORD_LOGIN_ENABLED=true`.
+- Branded transactional email templates cover registration, order confirmation,
+  TTN shipment notices, and password reset. See
+  `docs/transactional-email.md`.
 
 ## Phase 5 Notes
 

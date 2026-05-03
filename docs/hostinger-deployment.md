@@ -30,6 +30,15 @@ GOOGLE_CLIENT_SECRET="google-client-secret"
 IMAGE_STORAGE_PROVIDER=local
 LOCAL_UPLOAD_DIR=public/uploads
 LOCAL_UPLOAD_PUBLIC_BASE_URL=/uploads
+
+EMAIL_PROVIDER=smtp
+SMTP_HOST="smtp.your-provider.com"
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER="mailbox@YOUR_DOMAIN"
+SMTP_PASSWORD=""
+FROM_NAME="Rytm"
+FROM_EMAIL="mailbox@YOUR_DOMAIN"
 ```
 
 `ADMIN_EMAIL` is the only Google account allowed to access `/admin`.
@@ -72,6 +81,10 @@ npm run start
 `npm run db:deploy` applies Prisma migrations. `npm run db:seed` loads the
 current store data: products, categories, combo offers, coupons, delivery and
 payment settings, and product images.
+
+Transactional emails use the branded templates in
+`docs/transactional-email.md`. Without email credentials, registration, order,
+password reset, and TTN emails are simulated and no real message is sent.
 
 ## Local Uploaded Images
 

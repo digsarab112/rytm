@@ -15,7 +15,7 @@ type FeedbackState = {
 
 export type AdminActionRunner = (
   actionId: string,
-  action: () => void,
+  action: () => void | Promise<void>,
   successMessage: string,
   errorMessage?: string,
 ) => void;
@@ -74,19 +74,21 @@ export function useAdminActionFeedback() {
       setPendingAction(actionId);
       showFeedback("Saving changes...", "loading");
 
-      try {
-        action();
-        pendingTimerRef.current = window.setTimeout(() => {
-          setPendingAction((currentAction) =>
-            currentAction === actionId ? null : currentAction,
-          );
-          showFeedback(successMessage, "success");
-          pendingTimerRef.current = null;
-        }, 180);
-      } catch {
-        setPendingAction(null);
-        showFeedback(errorMessage, "error", 4200);
-      }
+      Promise.resolve()
+        .then(action)
+        .then(() => {
+          pendingTimerRef.current = window.setTimeout(() => {
+            setPendingAction((currentAction) =>
+              currentAction === actionId ? null : currentAction,
+            );
+            showFeedback(successMessage, "success");
+            pendingTimerRef.current = null;
+          }, 180);
+        })
+        .catch(() => {
+          setPendingAction(null);
+          showFeedback(errorMessage, "error", 4200);
+        });
     },
     [showFeedback],
   );

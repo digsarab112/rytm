@@ -259,8 +259,8 @@ model Product {
   supplier           Supplier?                @relation(fields: [supplierId], references: [id], onDelete: SetNull)
   images             ProductImage[]
   variants           ProductVariant[]
-  comboOffers        ProductComboOffer[]   @relation("ComboSourceProduct")
-  includedInCombos   ProductComboOffer[]   @relation("ComboTargetProduct")
+  comboOffers        ProductComboOffer[]      @relation("ComboSourceProduct")
+  includedInCombos   ProductComboOffer[]      @relation("ComboTargetProduct")
   attributeValues    ProductAttributeValue[]
   feedback           ProductFeedback[]
   savedByCustomers   CustomerSavedProduct[]
@@ -322,21 +322,21 @@ model ProductVariant {
 }
 
 model ProductComboOffer {
-  id              String   @id @default(cuid())
-  sourceProductId String
-  targetProductId String
+  id               String   @id @default(cuid())
+  sourceProductId  String
+  targetProductId  String
   targetProductIds Json     @default("[]")
-  titleUk         String?
-  titleRu         String?
-  descriptionUk   String?
-  descriptionRu   String?
-  discountPercent Int      @default(10)
-  sortOrder       Int      @default(0)
-  isActive        Boolean  @default(true)
-  sourceProduct   Product  @relation("ComboSourceProduct", fields: [sourceProductId], references: [id], onDelete: Cascade)
-  targetProduct   Product  @relation("ComboTargetProduct", fields: [targetProductId], references: [id], onDelete: Cascade)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  titleUk          String?
+  titleRu          String?
+  descriptionUk    String?
+  descriptionRu    String?
+  discountPercent  Int      @default(10)
+  sortOrder        Int      @default(0)
+  isActive         Boolean  @default(true)
+  sourceProduct    Product  @relation("ComboSourceProduct", fields: [sourceProductId], references: [id], onDelete: Cascade)
+  targetProduct    Product  @relation("ComboTargetProduct", fields: [targetProductId], references: [id], onDelete: Cascade)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@index([sourceProductId, isActive, sortOrder])
   @@index([targetProductId])
@@ -407,26 +407,40 @@ model ProductAttributeValue {
 }
 
 model Customer {
-  id                String                 @id @default(cuid())
-  email             String                 @unique
-  phone             String?                @unique
-  name              String?
-  passwordHash      String?
-  locale            String                 @default("uk")
-  provider          String?
-  providerAccountId String?
-  isActive          Boolean                @default(true)
-  profile           CustomerProfile?
-  orders            Order[]
-  feedback          ProductFeedback[]
-  feedbackReplies   ProductFeedbackReply[]
-  savedProducts     CustomerSavedProduct[]
-  notificationLogs  NotificationLog[]
-  createdAt         DateTime               @default(now())
-  updatedAt         DateTime               @updatedAt
+  id                  String                       @id @default(cuid())
+  email               String                       @unique
+  phone               String?                      @unique
+  name                String?
+  passwordHash        String?
+  locale              String                       @default("uk")
+  provider            String?
+  providerAccountId   String?
+  isActive            Boolean                      @default(true)
+  profile             CustomerProfile?
+  orders              Order[]
+  feedback            ProductFeedback[]
+  feedbackReplies     ProductFeedbackReply[]
+  savedProducts       CustomerSavedProduct[]
+  notificationLogs    NotificationLog[]
+  passwordResetTokens CustomerPasswordResetToken[]
+  createdAt           DateTime                     @default(now())
+  updatedAt           DateTime                     @updatedAt
 
   @@unique([provider, providerAccountId])
   @@map("customers")
+}
+
+model CustomerPasswordResetToken {
+  id         String    @id @default(cuid())
+  customerId String
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  usedAt     DateTime?
+  customer   Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+
+  @@index([customerId, expiresAt])
+  @@map("customer_password_reset_tokens")
 }
 
 model CustomerProfile {
@@ -553,12 +567,12 @@ model Shipment {
 }
 
 model ProductFeedback {
-  id                 String       @id @default(cuid())
+  id                 String                 @id @default(cuid())
   productId          String
   customerId         String?
   orderId            String?
-  type               FeedbackType @default(REVIEW)
-  status             ReviewStatus @default(APPROVED)
+  type               FeedbackType           @default(REVIEW)
+  status             ReviewStatus           @default(APPROVED)
   rating             Int?
   customerName       String
   customerEmail      String?
@@ -566,12 +580,12 @@ model ProductFeedback {
   comment            String
   adminReply         String?
   adminRepliedAt     DateTime?
-  isVerifiedPurchase Boolean      @default(false)
-  product            Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
-  customer           Customer?    @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  isVerifiedPurchase Boolean                @default(false)
+  product            Product                @relation(fields: [productId], references: [id], onDelete: Cascade)
+  customer           Customer?              @relation(fields: [customerId], references: [id], onDelete: SetNull)
   replies            ProductFeedbackReply[]
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
 
   @@index([productId, status])
   @@index([customerId])
@@ -579,18 +593,18 @@ model ProductFeedback {
 }
 
 model ProductFeedbackReply {
-  id            String         @id @default(cuid())
+  id            String          @id @default(cuid())
   feedbackId    String
   customerId    String?
-  status        ReviewStatus   @default(APPROVED)
+  status        ReviewStatus    @default(APPROVED)
   customerName  String
   customerEmail String?
   customerPhone String?
   comment       String
   feedback      ProductFeedback @relation(fields: [feedbackId], references: [id], onDelete: Cascade)
   customer      Customer?       @relation(fields: [customerId], references: [id], onDelete: SetNull)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 
   @@index([feedbackId, status, createdAt])
   @@index([customerId])

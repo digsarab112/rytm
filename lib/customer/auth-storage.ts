@@ -1,4 +1,5 @@
 import type { CustomerAccount, CustomerSession } from "@/types/customer";
+import type { Locale } from "@/lib/i18n/config";
 import { loginAdminFromCustomerLogin } from "@/lib/admin/actions";
 import {
   loginCustomerAccount,
@@ -13,6 +14,7 @@ type CustomerRegisterInput = {
   name: string;
   email: string;
   password: string;
+  locale?: Locale;
 };
 
 type CustomerLoginInput = {
@@ -45,6 +47,7 @@ export async function registerCustomer({
   name,
   email,
   password,
+  locale = "uk",
 }: CustomerRegisterInput): Promise<CustomerAuthResult> {
   const normalizedEmail = normalizeEmail(email);
 
@@ -56,6 +59,7 @@ export async function registerCustomer({
     name,
     email: normalizedEmail,
     password,
+    locale,
   });
 
   if (databaseResult.ok) {

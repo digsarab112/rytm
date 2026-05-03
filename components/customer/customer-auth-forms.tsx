@@ -48,7 +48,7 @@ export function CustomerRegisterForm({
     }
 
     setIsPending(true);
-    const result = await registerCustomer({ name, email, password });
+    const result = await registerCustomer({ name, email, password, locale });
     setIsPending(false);
 
     if (!result.ok) {
@@ -187,6 +187,12 @@ export function CustomerLoginForm({
             <LogIn />
             {isPending ? copy.signIn : copy.signIn}
           </Button>
+          <Link
+            href={`/auth/forgot-password?locale=${locale}`}
+            className="text-sm font-bold text-primary hover:underline"
+          >
+            {locale === "uk" ? "Забули пароль?" : "Забыли пароль?"}
+          </Link>
           <p className="text-sm text-muted-foreground">
             {copy.noAccount}{" "}
             <Link

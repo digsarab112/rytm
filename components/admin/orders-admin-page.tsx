@@ -21,6 +21,7 @@ import {
   ADMIN_PRODUCTS_STORAGE_KEY,
   ADMIN_SUPPLIERS_STORAGE_KEY,
 } from "@/lib/admin/storage";
+import { sendCustomerShipmentEmail } from "@/lib/admin/order-notification-actions";
 import {
   deliveryMethodLabels,
   deliveryProviderLabels,
@@ -249,7 +250,7 @@ function OrderDetails({
     });
   }
 
-  function sendNotification(shipment: Shipment) {
+  async function sendNotification(shipment: Shipment) {
     if (!shipment.ttnNumber.trim()) {
       updateShipment(shipment.id, {
         notificationStatus: "failed",
@@ -262,6 +263,17 @@ function OrderDetails({
       return false;
     }
 
+    const emailResult = await sendCustomerShipmentEmail({ order, shipment });
+
+    if (!emailResult.ok) {
+      updateShipment(shipment.id, {
+        notificationStatus: "failed",
+        customerNotificationStatus: "failed",
+        notificationLog: [...shipment.notificationLog, emailResult.logEntry],
+      });
+      return false;
+    }
+
     const notification = simulateShipmentNotification({
       orderId: order.id,
       locale: order.locale,
@@ -270,11 +282,15 @@ function OrderDetails({
     });
 
     updateShipment(shipment.id, {
-      notificationStatus: notification.status,
-      notificationSentAt: notification.sentAt,
-      customerNotificationStatus: notification.status,
-      customerNotificationSentAt: notification.sentAt,
-      notificationLog: [...shipment.notificationLog, notification.logEntry],
+      notificationStatus: emailResult.status,
+      notificationSentAt: emailResult.sentAt,
+      customerNotificationStatus: emailResult.status,
+      customerNotificationSentAt: emailResult.sentAt,
+      notificationLog: [
+        ...shipment.notificationLog,
+        notification.logEntry,
+        emailResult.logEntry,
+      ],
     });
     return true;
   }
@@ -508,13 +524,13 @@ function OrderDetails({
                         onClick={() =>
                           runAction(
                             `notify-${shipment.id}`,
-                            () => {
-                              if (!sendNotification(shipment)) {
+                            async () => {
+                              if (!(await sendNotification(shipment))) {
                                 throw new Error("TTN is required.");
                               }
                             },
-                            "Customer notification queued.",
-                            "Enter a TTN before sending a notification.",
+                            "Customer notification sent.",
+                            "Enter a TTN and email before sending a notification.",
                           )
                         }
                       >

@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 
 import { getPrismaClient, isDatabaseConfigured } from "@/lib/db/prisma";
+import { sendEmailNotification } from "@/lib/integrations/email";
+import { buildOrderConfirmationEmail } from "@/lib/notifications/email-templates";
 import { upsertOrder } from "@/lib/platform/storefront-database";
 import type { MockOrder } from "@/types/cart";
 import type { CustomerSession } from "@/types/customer";
@@ -21,11 +23,27 @@ export async function createCheckoutOrder({
   const customerId = await upsertCheckoutCustomer(order, session);
   const savedOrder = await upsertOrder(order, customerId);
 
+  await sendOrderConfirmationEmail(savedOrder);
+
   revalidatePath("/", "layout");
   revalidatePath("/admin/orders");
   revalidatePath("/account");
 
   return { ok: true as const, order: savedOrder };
+}
+
+async function sendOrderConfirmationEmail(order: MockOrder) {
+  if (!order.email.trim()) {
+    return;
+  }
+
+  const template = buildOrderConfirmationEmail(order);
+  await sendEmailNotification({
+    to: order.email.trim().toLowerCase(),
+    subject: template.subject,
+    text: template.text,
+    html: template.html,
+  });
 }
 
 export async function getCheckoutOrder(orderId: string) {

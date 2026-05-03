@@ -23,10 +23,12 @@ export function buildShipmentNotificationMessage({
 }: ShipmentNotificationInput) {
   if (locale === "ru") {
     const provider = providerLabels[deliveryProvider].ru;
+
     return `Ваш заказ №${orderId} отправлен. ТТН ${provider}: ${ttn}. Спасибо, Rytm.`;
   }
 
   const provider = providerLabels[deliveryProvider].uk;
+
   return `Ваше замовлення №${orderId} відправлено. ТТН ${provider}: ${ttn}. Дякуємо, Rytm.`;
 }
 
