@@ -1,0 +1,12 @@
+<svg width="900" height="640" viewBox="0 0 900 640" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Daily care set">
+  <rect width="900" height="640" rx="34" fill="#F8E8DE"/>
+  <path d="M0 438C159 380 287 394 418 456C558 522 698 520 900 430V640H0V438Z" fill="#EBC8BD"/>
+  <ellipse cx="452" cy="515" rx="250" ry="42" fill="#7A453F" opacity=".18"/>
+  <rect x="252" y="145" width="138" height="330" rx="34" fill="#FFF9F4" stroke="#FFFFFF" stroke-width="10"/>
+  <rect x="280" y="103" width="82" height="56" rx="18" fill="#B46D62"/>
+  <rect x="284" y="310" width="74" height="78" rx="16" fill="#EFB8AD"/>
+  <rect x="437" y="222" width="202" height="168" rx="48" fill="#FFFDF8" stroke="#FFFFFF" stroke-width="10"/>
+  <rect x="461" y="184" width="154" height="74" rx="34" fill="#D7B58C"/>
+  <rect x="482" y="294" width="110" height="42" rx="17" fill="#EAD8BF"/>
+  <path d="M548 484C616 395 702 374 801 418C728 482 646 507 548 484Z" fill="#D8EADF"/>
+</svg>

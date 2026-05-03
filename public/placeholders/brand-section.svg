@@ -1,0 +1,11 @@
+<svg width="900" height="520" viewBox="0 0 900 520" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Beauty section visual">
+  <rect width="900" height="520" rx="32" fill="#DEEEE3"/>
+  <path d="M0 344C136 297 245 315 364 368C504 430 638 418 900 330V520H0V344Z" fill="#C8DCCF"/>
+  <ellipse cx="445" cy="430" rx="238" ry="38" fill="#43634A" opacity=".15"/>
+  <rect x="326" y="122" width="140" height="292" rx="34" fill="#FFFDF7" stroke="#FFFFFF" stroke-width="10"/>
+  <rect x="352" y="84" width="88" height="52" rx="16" fill="#7C9B83"/>
+  <rect x="356" y="270" width="80" height="70" rx="16" fill="#B8D2BE"/>
+  <rect x="514" y="188" width="128" height="230" rx="36" fill="#FFF9F4" stroke="#FFFFFF" stroke-width="10"/>
+  <rect x="538" y="150" width="80" height="52" rx="16" fill="#B46D62"/>
+  <path d="M158 408C220 314 300 286 395 324C323 392 248 420 158 408Z" fill="#9EBCA5"/>
+</svg>

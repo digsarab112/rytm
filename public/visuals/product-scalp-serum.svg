@@ -1,0 +1,25 @@
+<svg width="900" height="675" viewBox="0 0 900 675" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Scalp serum dropper with clean haircare accents">
+  <defs>
+    <linearGradient id="bg" x1="78" y1="64" x2="815" y2="612" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EDF7F0"/>
+      <stop offset=".6" stop-color="#DDECE4"/>
+      <stop offset="1" stop-color="#F3E6D9"/>
+    </linearGradient>
+    <linearGradient id="serum" x1="395" y1="132" x2="510" y2="545" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#C9DFD1"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="675" rx="42" fill="url(#bg)"/>
+  <ellipse cx="452" cy="558" rx="252" ry="34" fill="#78977C" opacity=".2"/>
+  <circle cx="211" cy="166" r="80" fill="#CFE5D8" opacity=".6"/>
+  <circle cx="713" cy="191" r="78" fill="#F3C8BA" opacity=".34"/>
+  <path d="M157 431c83-75 169-89 258-41" stroke="#769A7E" stroke-width="15" stroke-linecap="round" opacity=".5"/>
+  <path d="M601 423c44-51 93-72 148-63" stroke="#B98173" stroke-width="13" stroke-linecap="round" opacity=".42"/>
+  <rect x="401" y="82" width="97" height="54" rx="20" fill="#6F8E78"/>
+  <rect x="421" y="124" width="57" height="73" rx="18" fill="#EFF7EF"/>
+  <rect x="367" y="181" width="164" height="360" rx="45" fill="url(#serum)" stroke="#FFFFFF" stroke-width="8"/>
+  <path d="M449 248c33 48 50 88 50 122 0 32-22 55-50 55s-50-23-50-55c0-34 17-74 50-122Z" fill="#9EBDA7" opacity=".68"/>
+  <path d="M417 471h64" stroke="#688A72" stroke-width="10" stroke-linecap="round"/>
+  <rect x="591" y="389" width="94" height="124" rx="26" fill="#FFF8EF" opacity=".86"/>
+</svg>

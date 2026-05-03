@@ -1,0 +1,25 @@
+<svg width="900" height="675" viewBox="0 0 900 675" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hand cream tube with warm cotton care scene">
+  <defs>
+    <linearGradient id="bg" x1="72" y1="62" x2="817" y2="612" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF5EA"/>
+      <stop offset=".55" stop-color="#F2E3D5"/>
+      <stop offset="1" stop-color="#F5DCD5"/>
+    </linearGradient>
+    <linearGradient id="tube" x1="334" y1="119" x2="537" y2="550" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDF8"/>
+      <stop offset="1" stop-color="#ECD8C1"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="675" rx="42" fill="url(#bg)"/>
+  <ellipse cx="452" cy="558" rx="258" ry="35" fill="#A77C65" opacity=".18"/>
+  <circle cx="209" cy="184" r="76" fill="#FFFFFF" opacity=".58"/>
+  <circle cx="716" cy="179" r="88" fill="#F0BCAF" opacity=".36"/>
+  <path d="M170 429c64-41 129-49 194-25" stroke="#B88E72" stroke-width="15" stroke-linecap="round" opacity=".44"/>
+  <path d="M606 412c45-38 90-49 136-32" stroke="#C78072" stroke-width="13" stroke-linecap="round" opacity=".43"/>
+  <path d="M378 108h147l-25 76h-98l-24-76Z" fill="#AF7662"/>
+  <path d="M327 179h250l-43 354H370l-43-354Z" fill="url(#tube)" stroke="#FFFFFF" stroke-width="8"/>
+  <rect x="383" y="294" width="142" height="105" rx="25" fill="#E9CFB8"/>
+  <path d="M417 330h76M429 363h48" stroke="#8F6754" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="266" cy="466" r="42" fill="#FFF8EF" opacity=".88"/>
+  <circle cx="631" cy="468" r="47" fill="#FFF8EF" opacity=".82"/>
+</svg>

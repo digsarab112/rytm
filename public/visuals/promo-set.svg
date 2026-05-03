@@ -1,0 +1,13 @@
+<svg width="1400" height="720" viewBox="0 0 1400 720" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rytm daily care set visual">
+  <rect width="1400" height="720" rx="54" fill="#F5E8DC"/>
+  <circle cx="278" cy="180" r="118" fill="#F1C3B6" opacity=".42"/>
+  <circle cx="1128" cy="184" r="145" fill="#D8EADF" opacity=".58"/>
+  <ellipse cx="704" cy="592" rx="403" ry="46" fill="#9F7B61" opacity=".15"/>
+  <rect x="482" y="151" width="180" height="390" rx="44" fill="#FFFDF8" stroke="#FFFFFF" stroke-width="10"/>
+  <rect x="512" y="310" width="120" height="92" rx="24" fill="#EFB8AD"/>
+  <rect x="694" y="234" width="235" height="92" rx="45" fill="#A66B5C"/>
+  <rect x="668" y="300" width="287" height="215" rx="64" fill="#FFF8EF" stroke="#FFFFFF" stroke-width="10"/>
+  <rect x="744" y="358" width="139" height="72" rx="23" fill="#D8EADF"/>
+  <path d="M310 491c121-64 249-70 384-18" stroke="#B98173" stroke-width="18" stroke-linecap="round" opacity=".47"/>
+  <path d="M881 493c74-75 154-97 241-64" stroke="#8FAF97" stroke-width="17" stroke-linecap="round" opacity=".52"/>
+</svg>

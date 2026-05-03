@@ -1,0 +1,11 @@
+<svg width="900" height="675" viewBox="0 0 900 675" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Clean skincare ritual with water drops and soft towels">
+  <rect width="900" height="675" rx="42" fill="#F9EEE8"/>
+  <circle cx="205" cy="167" r="92" fill="#D8EADF" opacity=".55"/>
+  <circle cx="712" cy="177" r="84" fill="#EFB8AD" opacity=".4"/>
+  <ellipse cx="451" cy="544" rx="267" ry="38" fill="#A86F63" opacity=".14"/>
+  <rect x="266" y="333" width="368" height="92" rx="46" fill="#FFFDF8"/>
+  <rect x="305" y="276" width="290" height="87" rx="43" fill="#E9F1E6"/>
+  <path d="M336 214c-28 38-42 70-42 97 0 34 25 58 56 58s56-24 56-58c0-27-24-59-70-97Z" fill="#C8DFD1"/>
+  <path d="M549 190c-25 34-38 63-38 87 0 30 22 52 50 52s50-22 50-52c0-24-21-53-62-87Z" fill="#EDB4AA"/>
+  <path d="M250 472c91 32 182 32 273 0" stroke="#B88375" stroke-width="14" stroke-linecap="round" opacity=".5"/>
+</svg>

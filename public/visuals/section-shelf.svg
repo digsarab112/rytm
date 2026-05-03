@@ -1,0 +1,11 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Skincare shelf with soft Rytm care products">
+  <rect width="1200" height="760" rx="52" fill="#FBF0E8"/>
+  <circle cx="238" cy="185" r="105" fill="#EFB8AD" opacity=".42"/>
+  <circle cx="974" cy="210" r="132" fill="#D8EADF" opacity=".58"/>
+  <ellipse cx="602" cy="615" rx="380" ry="47" fill="#9F5F55" opacity=".13"/>
+  <rect x="286" y="492" width="628" height="74" rx="37" fill="#FFFDF8"/>
+  <rect x="365" y="208" width="154" height="284" rx="42" fill="#FFFDF8" stroke="#FFFFFF" stroke-width="9"/>
+  <rect x="548" y="284" width="191" height="208" rx="56" fill="#F1DFC9" stroke="#FFFFFF" stroke-width="9"/>
+  <rect x="768" y="242" width="112" height="250" rx="34" fill="#D8EADF" stroke="#FFFFFF" stroke-width="9"/>
+  <path d="M397 328h90M588 369h112M792 346h65" stroke="#9F5F55" stroke-width="11" stroke-linecap="round" opacity=".56"/>
+</svg>

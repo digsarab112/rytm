@@ -1,0 +1,25 @@
+<svg width="900" height="675" viewBox="0 0 900 675" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Daily face cream jar with warm botanical accents">
+  <defs>
+    <linearGradient id="bg" x1="54" y1="55" x2="822" y2="622" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF6EA"/>
+      <stop offset=".55" stop-color="#F8E5DB"/>
+      <stop offset="1" stop-color="#DCECDD"/>
+    </linearGradient>
+    <linearGradient id="jar" x1="295" y1="278" x2="606" y2="546" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#ECD4BE"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="675" rx="42" fill="url(#bg)"/>
+  <ellipse cx="451" cy="552" rx="271" ry="37" fill="#AA725E" opacity=".18"/>
+  <circle cx="678" cy="160" r="96" fill="#D8EADF" opacity=".55"/>
+  <circle cx="218" cy="197" r="61" fill="#EFB8AD" opacity=".42"/>
+  <path d="M165 422c58-84 119-110 184-79" stroke="#8DAA88" stroke-width="15" stroke-linecap="round" opacity=".5"/>
+  <path d="M614 415c47-44 91-54 132-28" stroke="#C58D7E" stroke-width="15" stroke-linecap="round" opacity=".45"/>
+  <rect x="297" y="246" width="310" height="71" rx="32" fill="#A66B5C"/>
+  <rect x="282" y="300" width="340" height="208" rx="64" fill="url(#jar)" stroke="#FFFFFF" stroke-width="9"/>
+  <rect x="365" y="354" width="174" height="90" rx="25" fill="#F2CBBE"/>
+  <path d="M403 386h95M424 418h54" stroke="#8F5F51" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="271" cy="468" r="43" fill="#F6EEE4"/>
+  <circle cx="640" cy="470" r="48" fill="#F6EEE4"/>
+</svg>

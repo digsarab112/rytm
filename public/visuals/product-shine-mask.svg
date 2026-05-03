@@ -1,0 +1,25 @@
+<svg width="900" height="675" viewBox="0 0 900 675" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hair mask tube with soft green care elements">
+  <defs>
+    <linearGradient id="bg" x1="79" y1="65" x2="817" y2="611" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EFF7EF"/>
+      <stop offset=".58" stop-color="#E1EFE5"/>
+      <stop offset="1" stop-color="#F6E7DD"/>
+    </linearGradient>
+    <linearGradient id="tube" x1="333" y1="116" x2="533" y2="552" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDF7"/>
+      <stop offset="1" stop-color="#D3E5D8"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="675" rx="42" fill="url(#bg)"/>
+  <ellipse cx="448" cy="559" rx="255" ry="34" fill="#789779" opacity=".2"/>
+  <circle cx="190" cy="188" r="82" fill="#CBE0CF" opacity=".58"/>
+  <circle cx="719" cy="173" r="75" fill="#F1BFAF" opacity=".35"/>
+  <path d="M185 433c62-67 132-86 209-56" stroke="#7EA285" stroke-width="15" stroke-linecap="round" opacity=".55"/>
+  <path d="M605 358c39-61 82-88 129-82" stroke="#C98B7E" stroke-width="13" stroke-linecap="round" opacity=".42"/>
+  <path d="M381 88h142l-28 74h-88L381 88Z" fill="#789778"/>
+  <path d="M332 158h244l-36 390H368L332 158Z" fill="url(#tube)" stroke="#FFFFFF" stroke-width="8"/>
+  <rect x="384" y="295" width="139" height="112" rx="26" fill="#BFD8C6"/>
+  <path d="M416 332h75M429 367h50" stroke="#5F7E66" stroke-width="10" stroke-linecap="round"/>
+  <rect x="612" y="430" width="86" height="93" rx="23" fill="#FFF8F2" opacity=".9"/>
+  <rect x="245" y="408" width="82" height="109" rx="22" fill="#FFFFFF" opacity=".84"/>
+</svg>

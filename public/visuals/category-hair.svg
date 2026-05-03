@@ -1,0 +1,10 @@
+<svg width="1100" height="720" viewBox="0 0 1100 720" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hair care category visual">
+  <rect width="1100" height="720" rx="44" fill="#EEF7EF"/>
+  <circle cx="222" cy="185" r="116" fill="#CFE5D8" opacity=".64"/>
+  <circle cx="872" cy="202" r="118" fill="#F1C3B6" opacity=".34"/>
+  <ellipse cx="552" cy="578" rx="336" ry="43" fill="#678A70" opacity=".16"/>
+  <rect x="370" y="283" width="360" height="78" rx="39" fill="#FFFDF7"/>
+  <path d="M410 363v98M466 363v98M522 363v98M578 363v98M634 363v98M690 363v98" stroke="#7B9F82" stroke-width="15" stroke-linecap="round"/>
+  <path d="M247 468c115-86 244-106 385-58" stroke="#7FA384" stroke-width="17" stroke-linecap="round" opacity=".54"/>
+  <path d="M674 269c63-59 130-77 200-54" stroke="#B98173" stroke-width="15" stroke-linecap="round" opacity=".42"/>
+</svg>

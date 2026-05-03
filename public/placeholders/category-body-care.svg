@@ -1,0 +1,9 @@
+<svg width="720" height="360" viewBox="0 0 720 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Body care category">
+  <rect width="720" height="360" fill="#F5EADB"/>
+  <ellipse cx="356" cy="292" rx="210" ry="36" fill="#C69A6C" opacity=".18"/>
+  <rect x="120" y="114" width="164" height="156" rx="44" fill="#FFF9EF" stroke="#FFFFFF" stroke-width="8"/>
+  <rect x="144" y="82" width="116" height="58" rx="28" fill="#D7B58C"/>
+  <rect x="392" y="76" width="116" height="226" rx="28" fill="#FFFDF8" stroke="#FFFFFF" stroke-width="8"/>
+  <rect x="414" y="44" width="72" height="42" rx="14" fill="#C69A6C"/>
+  <circle cx="566" cy="218" r="54" fill="#D8EADF"/>
+</svg>

@@ -1,0 +1,24 @@
+<svg width="900" height="675" viewBox="0 0 900 675" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SPF fluid bottle with soft sunlit skincare scene">
+  <defs>
+    <linearGradient id="bg" x1="74" y1="64" x2="825" y2="610" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF5E4"/>
+      <stop offset=".55" stop-color="#FBE3D7"/>
+      <stop offset="1" stop-color="#DCECDF"/>
+    </linearGradient>
+    <linearGradient id="fluid" x1="350" y1="117" x2="539" y2="547" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDF7"/>
+      <stop offset="1" stop-color="#F0DACB"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="675" rx="42" fill="url(#bg)"/>
+  <ellipse cx="453" cy="557" rx="260" ry="35" fill="#C78B72" opacity=".18"/>
+  <circle cx="690" cy="171" r="96" fill="#F1C777" opacity=".38"/>
+  <path d="M690 48v48M690 248v49M566 172h49M764 172h50M602 84l34 34M744 226l35 35M779 84l-35 34M636 226l-34 35" stroke="#DCA96B" stroke-width="10" stroke-linecap="round" opacity=".52"/>
+  <circle cx="205" cy="199" r="72" fill="#E7F1E8" opacity=".55"/>
+  <rect x="394" y="88" width="104" height="72" rx="21" fill="#B36F61"/>
+  <rect x="343" y="146" width="207" height="401" rx="42" fill="url(#fluid)" stroke="#FFFFFF" stroke-width="8"/>
+  <rect x="380" y="290" width="134" height="112" rx="28" fill="#F3C5B8"/>
+  <path d="M412 329h71M424 362h45" stroke="#915A4E" stroke-width="10" stroke-linecap="round"/>
+  <path d="M214 417c64-28 124-27 181 4" stroke="#8FAF97" stroke-width="14" stroke-linecap="round" opacity=".5"/>
+  <rect x="593" y="393" width="95" height="123" rx="25" fill="#FFF8EF" opacity=".88"/>
+</svg>

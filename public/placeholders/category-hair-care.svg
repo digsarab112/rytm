@@ -1,0 +1,8 @@
+<svg width="720" height="360" viewBox="0 0 720 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hair care category">
+  <rect width="720" height="360" fill="#DFEFE5"/>
+  <path d="M0 252C120 205 220 214 330 264C455 320 570 306 720 240V360H0V252Z" fill="#C8DCCF"/>
+  <rect x="136" y="76" width="116" height="226" rx="28" fill="#FFFDF7" stroke="#FFFFFF" stroke-width="8"/>
+  <rect x="158" y="44" width="72" height="42" rx="14" fill="#7C9B83"/>
+  <rect x="160" y="198" width="68" height="56" rx="14" fill="#B8D2BE"/>
+  <path d="M390 286C454 178 548 146 670 196C574 280 480 310 390 286Z" fill="#9EBCA5"/>
+</svg>

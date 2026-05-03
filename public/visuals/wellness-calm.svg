@@ -1,0 +1,13 @@
+<svg width="1200" height="820" viewBox="0 0 1200 820" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Calm wellness scene with bath salts and soft towels">
+  <rect width="1200" height="820" rx="52" fill="#F4ECE1"/>
+  <circle cx="236" cy="204" r="112" fill="#FFFFFF" opacity=".58"/>
+  <circle cx="972" cy="222" r="148" fill="#D8EADF" opacity=".6"/>
+  <ellipse cx="604" cy="668" rx="362" ry="47" fill="#947660" opacity=".16"/>
+  <rect x="402" y="365" width="398" height="104" rx="52" fill="#FFF8EF"/>
+  <rect x="451" y="290" width="300" height="111" rx="55" fill="#E9DDCF"/>
+  <path d="M396 224c81-69 171-84 270-46" stroke="#8FAF97" stroke-width="18" stroke-linecap="round" opacity=".5"/>
+  <path d="M655 228c74-78 153-103 237-75" stroke="#9F7B61" stroke-width="17" stroke-linecap="round" opacity=".44"/>
+  <circle cx="511" cy="533" r="25" fill="#D8C6AE"/>
+  <circle cx="604" cy="562" r="31" fill="#BFD8C6"/>
+  <circle cx="694" cy="525" r="26" fill="#E8C9B1"/>
+</svg>

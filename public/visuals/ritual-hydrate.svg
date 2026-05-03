@@ -1,0 +1,11 @@
+<svg width="900" height="675" viewBox="0 0 900 675" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hydration ritual with cream texture and botanical accents">
+  <rect width="900" height="675" rx="42" fill="#FBF1E5"/>
+  <circle cx="211" cy="186" r="85" fill="#F1C9BD" opacity=".44"/>
+  <circle cx="696" cy="166" r="92" fill="#DCECDF" opacity=".58"/>
+  <ellipse cx="452" cy="553" rx="269" ry="38" fill="#B5876B" opacity=".16"/>
+  <rect x="265" y="276" width="370" height="214" rx="78" fill="#FFFDF8" stroke="#FFFFFF" stroke-width="8"/>
+  <path d="M327 359c79-47 163-47 251 0" stroke="#E4C5AA" stroke-width="28" stroke-linecap="round"/>
+  <path d="M357 417c59-28 121-28 186 0" stroke="#D7E6DA" stroke-width="22" stroke-linecap="round"/>
+  <path d="M205 433c58-51 123-65 194-41" stroke="#8FAF97" stroke-width="15" stroke-linecap="round" opacity=".5"/>
+  <path d="M617 419c39-40 84-54 134-43" stroke="#B98173" stroke-width="14" stroke-linecap="round" opacity=".45"/>
+</svg>

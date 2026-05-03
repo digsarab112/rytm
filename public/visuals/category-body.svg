@@ -1,0 +1,11 @@
+<svg width="1100" height="720" viewBox="0 0 1100 720" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Body care category visual">
+  <rect width="1100" height="720" rx="44" fill="#F6ECDF"/>
+  <circle cx="238" cy="188" r="110" fill="#FFFFFF" opacity=".62"/>
+  <circle cx="868" cy="180" r="128" fill="#F3C8BA" opacity=".38"/>
+  <ellipse cx="552" cy="576" rx="334" ry="43" fill="#9F7B61" opacity=".15"/>
+  <rect x="345" y="360" width="410" height="91" rx="45" fill="#FFF8EF"/>
+  <rect x="389" y="292" width="322" height="94" rx="47" fill="#EADBCB"/>
+  <path d="M495 185c-51 67-76 123-76 166 0 51 36 86 81 86s81-35 81-86c0-43-29-99-86-166Z" fill="#E5B980" opacity=".8"/>
+  <path d="M253 470c99 35 197 35 294 0" stroke="#B58B70" stroke-width="16" stroke-linecap="round" opacity=".48"/>
+  <path d="M666 464c68-56 138-69 210-40" stroke="#C18B7B" stroke-width="15" stroke-linecap="round" opacity=".43"/>
+</svg>

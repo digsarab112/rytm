@@ -1,0 +1,14 @@
+<svg width="1100" height="760" viewBox="0 0 1100 760" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wellness beauty atmosphere">
+  <rect width="1100" height="760" rx="36" fill="#EFE4D7"/>
+  <path d="M0 530C190 455 330 475 500 548C700 634 846 596 1100 506V760H0V530Z" fill="#D8C6AE"/>
+  <ellipse cx="548" cy="622" rx="340" ry="54" fill="#7C604F" opacity=".16"/>
+  <rect x="250" y="200" width="186" height="340" rx="42" fill="#FFF9EF" stroke="#FFFFFF" stroke-width="12"/>
+  <rect x="282" y="145" width="122" height="72" rx="22" fill="#9F7B61"/>
+  <rect x="292" y="356" width="104" height="82" rx="18" fill="#D8C6AE"/>
+  <rect x="522" y="260" width="194" height="244" rx="54" fill="#FFFDF8" stroke="#FFFFFF" stroke-width="12"/>
+  <rect x="552" y="214" width="134" height="70" rx="24" fill="#7C9B83"/>
+  <rect x="568" y="360" width="102" height="74" rx="18" fill="#C8DCCF"/>
+  <path d="M734 575C812 447 918 405 1040 458C948 553 844 594 734 575Z" fill="#9EBCA5"/>
+  <circle cx="196" cy="527" r="62" fill="#F8CFC5"/>
+  <circle cx="196" cy="527" r="34" fill="#FFF9EF"/>
+</svg>

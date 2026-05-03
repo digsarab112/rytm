@@ -1,0 +1,25 @@
+<svg width="900" height="675" viewBox="0 0 900 675" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Magnesium bath salts pouch with calming wellness details">
+  <defs>
+    <linearGradient id="bg" x1="73" y1="64" x2="824" y2="611" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7EFE5"/>
+      <stop offset=".58" stop-color="#EEE2D4"/>
+      <stop offset="1" stop-color="#DDEBE1"/>
+    </linearGradient>
+    <linearGradient id="pouch" x1="325" y1="134" x2="587" y2="548" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF8ED"/>
+      <stop offset="1" stop-color="#D8C6AE"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="675" rx="42" fill="url(#bg)"/>
+  <ellipse cx="452" cy="558" rx="263" ry="36" fill="#9F7B61" opacity=".18"/>
+  <circle cx="202" cy="178" r="78" fill="#FFFFFF" opacity=".54"/>
+  <circle cx="715" cy="170" r="88" fill="#D7E8DC" opacity=".55"/>
+  <path d="M165 428c58-51 121-64 188-40" stroke="#A7856B" stroke-width="15" stroke-linecap="round" opacity=".46"/>
+  <path d="M609 410c37-42 83-60 137-53" stroke="#83A58B" stroke-width="13" stroke-linecap="round" opacity=".46"/>
+  <path d="M330 164c75-37 161-37 258 0v356c-81 36-167 36-258 0V164Z" fill="url(#pouch)" stroke="#FFFFFF" stroke-width="8"/>
+  <path d="M370 233c57 18 116 18 178 0" stroke="#9F7B61" stroke-width="12" stroke-linecap="round" opacity=".55"/>
+  <rect x="383" y="319" width="147" height="104" rx="26" fill="#FFF8EF" opacity=".8"/>
+  <path d="M417 354h78M432 387h49" stroke="#8F725D" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="290" cy="461" r="22" fill="#F8F1E6"/>
+  <circle cx="626" cy="460" r="24" fill="#F8F1E6"/>
+</svg>

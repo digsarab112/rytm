@@ -1,0 +1,8 @@
+<svg width="720" height="360" viewBox="0 0 720 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Face care category">
+  <rect width="720" height="360" fill="#F8DFDA"/>
+  <circle cx="560" cy="106" r="92" fill="#EFB8AD"/>
+  <rect x="108" y="84" width="122" height="214" rx="30" fill="#FFF9F4" stroke="#FFFFFF" stroke-width="8"/>
+  <rect x="132" y="52" width="74" height="42" rx="14" fill="#B46D62"/>
+  <rect x="136" y="198" width="66" height="54" rx="14" fill="#EFB8AD"/>
+  <path d="M356 284C410 198 482 170 570 204C506 272 434 300 356 284Z" fill="#D8EADF"/>
+</svg>

@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fbf7f1;
+  --foreground: #2e2724;
+  --card: #fffdfa;
+  --card-foreground: #2e2724;
+  --primary: #9f5f55;
+  --primary-foreground: #fffaf6;
+  --secondary: #d8eadf;
+  --secondary-foreground: #244135;
+  --accent: #efb8ad;
+  --accent-foreground: #4b2b27;
+  --muted: #f2e8dd;
+  --muted-foreground: #77665f;
+  --border: #e7d9cc;
+  --input: #dfd0c3;
+  --ring: #9f5f55;
+  --radius: 1rem;
+  --font-sans:
+    "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Arial",
+    sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --radius-sm: calc(var(--radius) - 0.25rem);
+  --radius-md: calc(var(--radius) - 0.125rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.25rem);
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: #efb8ad;
+  color: #2e2724;
+}
+
+a {
+  text-underline-offset: 4px;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.product-shape {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 60%),
+    0 16px 38px rgb(91 64 50 / 10%);
+}
+
+.homepage-product-rail {
+  --homepage-product-rail-gap: 0.75rem;
+  display: grid;
+  grid-auto-columns: calc((100% - var(--homepage-product-rail-gap)) / 2);
+  grid-auto-flow: column;
+  gap: var(--homepage-product-rail-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.homepage-product-rail::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.related-products-rail {
+  --related-products-rail-gap: 0.625rem;
+  display: grid;
+  grid-auto-columns: calc((100% - var(--related-products-rail-gap)) / 2);
+  grid-auto-flow: column;
+  gap: var(--related-products-rail-gap);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: 0;
+  scroll-snap-type: x mandatory;
+  touch-action: pan-x;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.related-products-rail::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.homepage-product-rail-item {
+  min-width: 0;
+  height: 100%;
+}
+
+.related-products-rail-item {
+  min-width: 0;
+  height: 100%;
+}
+
+@media (min-width: 640px) {
+  .homepage-product-rail {
+    --homepage-product-rail-gap: 1rem;
+    grid-auto-columns: calc((100% - (var(--homepage-product-rail-gap) * 2)) / 3);
+  }
+
+  .related-products-rail {
+    --related-products-rail-gap: 1rem;
+    grid-auto-columns: calc((100% - (var(--related-products-rail-gap) * 2)) / 3);
+  }
+}
+
+@media (min-width: 1024px) {
+  .homepage-product-rail {
+    display: grid;
+    grid-auto-flow: row;
+    grid-auto-columns: initial;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  .related-products-rail {
+    --related-products-rail-gap: 1.5rem;
+    grid-auto-columns: calc((100% - (var(--related-products-rail-gap) * 3)) / 4);
+  }
+}
+
+@keyframes hero-media-drift {
+  from {
+    transform: scale(1.02) translate3d(-0.5%, 0, 0);
+  }
+
+  to {
+    transform: scale(1.08) translate3d(0.75%, -0.75%, 0);
+  }
+}
+
+.hero-media-visual {
+  animation: hero-media-drift 7s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-media-visual {
+    animation: none;
+    transform: none;
+  }
+}

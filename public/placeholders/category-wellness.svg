@@ -1,0 +1,9 @@
+<svg width="720" height="360" viewBox="0 0 720 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wellness category">
+  <rect width="720" height="360" fill="#EEE2D4"/>
+  <path d="M0 248C128 204 236 216 348 266C474 322 586 304 720 240V360H0V248Z" fill="#D8C6AE"/>
+  <rect x="124" y="86" width="126" height="216" rx="62" fill="#FFF9EF" stroke="#FFFFFF" stroke-width="8"/>
+  <rect x="154" y="54" width="66" height="42" rx="14" fill="#9F7B61"/>
+  <circle cx="396" cy="202" r="72" fill="#D8EADF"/>
+  <circle cx="396" cy="202" r="40" fill="#FFF9EF"/>
+  <path d="M462 292C516 206 590 178 684 214C614 284 540 314 462 292Z" fill="#9EBCA5"/>
+</svg>

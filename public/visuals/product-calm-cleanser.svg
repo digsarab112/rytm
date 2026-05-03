@@ -1,0 +1,26 @@
+<svg width="900" height="675" viewBox="0 0 900 675" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gentle cleanser with soft skincare elements">
+  <defs>
+    <linearGradient id="bg" x1="94" y1="63" x2="806" y2="612" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBF1EC"/>
+      <stop offset="1" stop-color="#E7F1E8"/>
+    </linearGradient>
+    <linearGradient id="bottle" x1="371" y1="143" x2="532" y2="546" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDF8"/>
+      <stop offset="1" stop-color="#F1DED2"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="675" rx="42" fill="url(#bg)"/>
+  <ellipse cx="454" cy="557" rx="263" ry="36" fill="#C69A8C" opacity=".18"/>
+  <circle cx="187" cy="160" r="71" fill="#F2C9BF" opacity=".44"/>
+  <circle cx="726" cy="179" r="96" fill="#CFE5D8" opacity=".5"/>
+  <path d="M148 438c66-29 128-31 188-4" stroke="#D7A69A" stroke-width="16" stroke-linecap="round" opacity=".5"/>
+  <path d="M642 401c41-47 86-67 135-61" stroke="#8FAF97" stroke-width="14" stroke-linecap="round" opacity=".52"/>
+  <rect x="396" y="93" width="105" height="66" rx="18" fill="#A6685F"/>
+  <rect x="353" y="145" width="196" height="398" rx="42" fill="url(#bottle)" stroke="#FFFFFF" stroke-width="8"/>
+  <rect x="382" y="290" width="138" height="112" rx="24" fill="#EFB8AD"/>
+  <path d="M409 329h84M423 364h56" stroke="#8F5A52" stroke-width="10" stroke-linecap="round"/>
+  <rect x="238" y="344" width="103" height="170" rx="26" fill="#FFFFFF" opacity=".86"/>
+  <rect x="255" y="380" width="69" height="42" rx="13" fill="#D8EADF"/>
+  <rect x="577" y="332" width="126" height="181" rx="33" fill="#FFF8F2" opacity=".9"/>
+  <path d="M613 374h54M604 431h72" stroke="#B9796D" stroke-width="10" stroke-linecap="round" opacity=".7"/>
+</svg>

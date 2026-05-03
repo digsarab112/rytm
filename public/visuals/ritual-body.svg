@@ -1,0 +1,11 @@
+<svg width="900" height="675" viewBox="0 0 900 675" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Body care ritual with oil drops and folded towel">
+  <rect width="900" height="675" rx="42" fill="#F6ECDF"/>
+  <circle cx="209" cy="184" r="78" fill="#FFFFFF" opacity=".6"/>
+  <circle cx="717" cy="177" r="91" fill="#F3C8BA" opacity=".38"/>
+  <ellipse cx="451" cy="548" rx="268" ry="39" fill="#A17B60" opacity=".16"/>
+  <rect x="275" y="342" width="356" height="82" rx="41" fill="#FFF8EF"/>
+  <rect x="309" y="284" width="287" height="86" rx="43" fill="#EADBCB"/>
+  <path d="M375 180c-38 53-57 97-57 132 0 42 30 72 68 72s68-30 68-72c0-35-26-79-79-132Z" fill="#E6B77F" opacity=".82"/>
+  <path d="M580 233c-23 32-35 59-35 81 0 27 20 47 45 47s45-20 45-47c0-22-18-49-55-81Z" fill="#C98D75" opacity=".58"/>
+  <path d="M221 462c84 31 166 31 247 0" stroke="#B58B70" stroke-width="15" stroke-linecap="round" opacity=".48"/>
+</svg>

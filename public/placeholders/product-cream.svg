@@ -1,0 +1,11 @@
+<svg width="900" height="675" viewBox="0 0 900 675" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cream cosmetics product placeholder">
+  <rect width="900" height="675" rx="32" fill="#F2E5D4"/>
+  <ellipse cx="455" cy="554" rx="260" ry="42" fill="#C69A6C" opacity=".22"/>
+  <rect x="317" y="154" width="160" height="356" rx="30" fill="#FFFDF8" stroke="#FFFFFF" stroke-width="10"/>
+  <rect x="342" y="114" width="110" height="52" rx="16" fill="#C69A6C"/>
+  <rect x="346" y="300" width="102" height="84" rx="18" fill="#EAD8BF"/>
+  <rect x="518" y="318" width="196" height="132" rx="44" fill="#FFF9EF" stroke="#FFFFFF" stroke-width="10"/>
+  <rect x="532" y="282" width="168" height="70" rx="34" fill="#D7B58C"/>
+  <rect x="558" y="361" width="116" height="38" rx="16" fill="#E8CFB0"/>
+  <path d="M210 500C243 420 290 388 352 406C306 458 263 489 210 500Z" fill="#D8EADF"/>
+</svg>

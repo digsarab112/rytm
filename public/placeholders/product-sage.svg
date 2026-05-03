@@ -1,0 +1,11 @@
+<svg width="900" height="675" viewBox="0 0 900 675" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sage cosmetics product placeholder">
+  <rect width="900" height="675" rx="32" fill="#DEEEE3"/>
+  <ellipse cx="450" cy="558" rx="245" ry="42" fill="#7C9B83" opacity=".22"/>
+  <rect x="360" y="118" width="170" height="398" rx="34" fill="#FFFDF7" stroke="#FFFFFF" stroke-width="10"/>
+  <rect x="389" y="79" width="112" height="54" rx="17" fill="#7C9B83"/>
+  <rect x="390" y="292" width="110" height="92" rx="18" fill="#C8DCCF"/>
+  <rect x="545" y="244" width="120" height="250" rx="28" fill="#F7FBF5" stroke="#FFFFFF" stroke-width="10"/>
+  <rect x="572" y="205" width="66" height="50" rx="15" fill="#6F8D75"/>
+  <path d="M240 480C289 391 351 360 426 389C374 454 318 488 240 480Z" fill="#9EBCA5"/>
+  <path d="M215 430C251 374 301 350 365 362C323 411 279 435 215 430Z" fill="#B8D2BE"/>
+</svg>

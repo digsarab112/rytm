@@ -1,0 +1,12 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Warm vanity scene with skincare and newsletter note">
+  <rect width="1200" height="760" rx="52" fill="#F7ECE2"/>
+  <circle cx="253" cy="204" r="120" fill="#F1C3B6" opacity=".42"/>
+  <circle cx="970" cy="199" r="134" fill="#D8EADF" opacity=".56"/>
+  <ellipse cx="602" cy="615" rx="376" ry="46" fill="#B0806B" opacity=".15"/>
+  <rect x="322" y="252" width="296" height="232" rx="42" fill="#FFFDF8" stroke="#FFFFFF" stroke-width="9"/>
+  <path d="M369 319h201M369 372h159M369 425h111" stroke="#C99183" stroke-width="14" stroke-linecap="round"/>
+  <rect x="690" y="207" width="150" height="302" rx="42" fill="#FFF8EF" stroke="#FFFFFF" stroke-width="9"/>
+  <rect x="718" y="330" width="94" height="72" rx="19" fill="#D8EADF"/>
+  <path d="M236 514c119-58 240-61 363-9" stroke="#B98173" stroke-width="17" stroke-linecap="round" opacity=".44"/>
+  <path d="M734 514c80-70 164-87 252-51" stroke="#8FAF97" stroke-width="16" stroke-linecap="round" opacity=".48"/>
+</svg>
