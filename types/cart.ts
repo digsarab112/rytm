@@ -37,12 +37,12 @@ export type DeliveryMethod = "nova_poshta" | "ukrposhta" | "pickup";
 
 export type PaymentMethod =
   | "cash_on_delivery"
-  | "liqpay"
+  | "monopay"
   | "online_payment"
   | "card_on_delivery";
 
 export type PaymentProvider =
-  | "liqpay"
+  | "monopay"
   | "cash_on_delivery"
   | "manual"
   | "card_on_delivery";
@@ -131,6 +131,7 @@ export type MockOrder = {
   paymentId?: string;
   paymentAmount?: number;
   paymentCurrency?: string;
+  paymentCheckoutUrl?: string;
   paidAt?: string;
   paymentRawResponse?: string;
   status: MockOrderStatus;

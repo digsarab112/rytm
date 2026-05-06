@@ -8,9 +8,6 @@ import { normalizeProductImageUrls } from "@/lib/catalog/product-images";
 
 export type ImageStorageProvider =
   | "url"
-  | "cloudinary"
-  | "uploadthing"
-  | "supabase"
   | "local";
 
 export type ImageStorageProviderOption = {
@@ -57,27 +54,6 @@ export const imageStorageProviderOptions: ImageStorageProviderOption[] = [
     requiresServerUpload: false,
     note: "Admins paste existing local or remote image URLs.",
   },
-  {
-    provider: "cloudinary",
-    label: "Cloudinary",
-    launchReady: true,
-    requiresServerUpload: true,
-    note: "Uploads to Cloudinary when cloud name, API key, and API secret are set.",
-  },
-  {
-    provider: "supabase",
-    label: "Supabase Storage",
-    launchReady: true,
-    requiresServerUpload: true,
-    note: "Uploads to a public Supabase Storage bucket using the server-side service role key.",
-  },
-  {
-    provider: "uploadthing",
-    label: "UploadThing",
-    launchReady: true,
-    requiresServerUpload: true,
-    note: "Uploads to UploadThing through the server-side UTApi when UPLOADTHING_TOKEN is set.",
-  },
 ];
 
 const allowedMimeTypes = new Map([
@@ -102,17 +78,7 @@ export function getImageStoragePlan(): ImageUploadPlan {
   const provider = getConfiguredProvider();
   const isConfigured =
     provider === "local" ||
-    provider === "url" ||
-    (provider === "cloudinary" &&
-      Boolean(process.env.CLOUDINARY_CLOUD_NAME) &&
-      Boolean(process.env.CLOUDINARY_API_KEY) &&
-      Boolean(process.env.CLOUDINARY_API_SECRET)) ||
-    (provider === "supabase" &&
-      Boolean(process.env.SUPABASE_URL) &&
-      Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY) &&
-      Boolean(process.env.SUPABASE_STORAGE_BUCKET)) ||
-    (provider === "uploadthing" && Boolean(process.env.UPLOADTHING_TOKEN)) ||
-    false;
+    provider === "url";
 
   return {
     provider,
@@ -133,18 +99,6 @@ export async function uploadImageFile(
 
   if (provider === "url") {
     throw new Error("URL mode accepts pasted image links only.");
-  }
-
-  if (provider === "cloudinary") {
-    return uploadToCloudinary(file, purpose);
-  }
-
-  if (provider === "supabase") {
-    return uploadToSupabaseStorage(file, purpose);
-  }
-
-  if (provider === "uploadthing") {
-    return uploadToUploadThing(file);
   }
 
   return uploadToLocalStorage(file, purpose);
@@ -183,127 +137,6 @@ async function uploadToLocalStorage(
     url: `${getLocalPublicBaseUrl()}/${storageKey.replaceAll(path.sep, "/")}`,
     provider: "local",
     storageKey,
-  };
-}
-
-async function uploadToCloudinary(
-  file: File,
-  purpose: ImageUploadPurpose,
-): Promise<UploadedImageResult> {
-  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-  const apiKey = process.env.CLOUDINARY_API_KEY;
-  const apiSecret = process.env.CLOUDINARY_API_SECRET;
-
-  if (!cloudName || !apiKey || !apiSecret) {
-    throw new Error("Cloudinary credentials are incomplete.");
-  }
-
-  const timestamp = Math.floor(Date.now() / 1000).toString();
-  const folder = [process.env.CLOUDINARY_FOLDER ?? "rytm", purpose]
-    .filter(Boolean)
-    .join("/");
-  const signature = signCloudinaryParameters({ folder, timestamp }, apiSecret);
-  const formData = new FormData();
-
-  formData.append("file", file);
-  formData.append("api_key", apiKey);
-  formData.append("timestamp", timestamp);
-  formData.append("folder", folder);
-  formData.append("signature", signature);
-
-  const response = await fetch(
-    `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-    {
-      method: "POST",
-      body: formData,
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error("Cloudinary upload failed.");
-  }
-
-  const payload = (await response.json()) as {
-    secure_url?: string;
-    public_id?: string;
-  };
-
-  if (!payload.secure_url) {
-    throw new Error("Cloudinary did not return an image URL.");
-  }
-
-  return {
-    url: payload.secure_url,
-    provider: "cloudinary",
-    storageKey: payload.public_id,
-  };
-}
-
-async function uploadToSupabaseStorage(
-  file: File,
-  purpose: ImageUploadPurpose,
-): Promise<UploadedImageResult> {
-  const supabaseUrl = process.env.SUPABASE_URL?.replace(/\/+$/, "");
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const bucket = process.env.SUPABASE_STORAGE_BUCKET;
-
-  if (!supabaseUrl || !serviceRoleKey || !bucket) {
-    throw new Error("Supabase Storage credentials are incomplete.");
-  }
-
-  const extension = getFileExtension(file);
-  const storageKey = createStorageKey(file.name, purpose, extension);
-  const endpoint = `${supabaseUrl}/storage/v1/object/${bucket}/${storageKey}`;
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      apikey: serviceRoleKey,
-      Authorization: `Bearer ${serviceRoleKey}`,
-      "Content-Type": file.type,
-      "x-upsert": "true",
-    },
-    body: Buffer.from(await file.arrayBuffer()),
-  });
-
-  if (!response.ok) {
-    throw new Error("Supabase Storage upload failed.");
-  }
-
-  return {
-    url: getSupabasePublicUrl(supabaseUrl, bucket, storageKey),
-    provider: "supabase",
-    storageKey,
-  };
-}
-
-async function uploadToUploadThing(
-  file: File,
-): Promise<UploadedImageResult> {
-  if (!process.env.UPLOADTHING_TOKEN) {
-    throw new Error("UploadThing token is missing.");
-  }
-
-  const { UTApi } = await import("uploadthing/server");
-  const utapi = new UTApi({
-    token: process.env.UPLOADTHING_TOKEN,
-  });
-  const result = await utapi.uploadFiles(file, {
-    acl: "public-read",
-    contentDisposition: "inline",
-  });
-
-  if (result.error) {
-    throw new Error(result.error.message || "UploadThing upload failed.");
-  }
-
-  if (!result.data?.ufsUrl && !result.data?.url) {
-    throw new Error("UploadThing did not return an image URL.");
-  }
-
-  return {
-    url: result.data.ufsUrl || result.data.url,
-    provider: "uploadthing",
-    storageKey: result.data.key,
   };
 }
 
@@ -357,32 +190,4 @@ function getLocalPublicBaseUrl() {
     "",
   );
 }
-
-function signCloudinaryParameters(
-  parameters: Record<string, string>,
-  apiSecret: string,
-) {
-  const payload = Object.entries(parameters)
-    .sort(([left], [right]) => left.localeCompare(right))
-    .map(([key, value]) => `${key}=${value}`)
-    .join("&");
-
-  return crypto
-    .createHash("sha1")
-    .update(`${payload}${apiSecret}`)
-    .digest("hex");
-}
-
-function getSupabasePublicUrl(
-  supabaseUrl: string,
-  bucket: string,
-  storageKey: string,
-) {
-  const baseUrl =
-    process.env.SUPABASE_STORAGE_PUBLIC_URL?.replace(/\/+$/, "") ??
-    `${supabaseUrl}/storage/v1/object/public/${bucket}`;
-
-  return `${baseUrl}/${storageKey}`;
-}
-
 export { normalizeProductImageUrls };

@@ -129,7 +129,7 @@ const deliveryProviderLabels: Record<DeliveryProvider, Record<Locale, string>> =
 const paymentLabels: Record<string, Record<Locale, string>> = {
   cash_on_delivery: { uk: "Оплата при отриманні", ru: "Оплата при получении" },
   card_on_delivery: { uk: "Карткою при отриманні", ru: "Картой при получении" },
-  liqpay: { uk: "Онлайн LiqPay", ru: "Онлайн LiqPay" },
+  monopay: { uk: "Онлайн Monopay", ru: "Онлайн Monopay" },
   online_payment: { uk: "Онлайн оплата", ru: "Онлайн оплата" },
 };
 

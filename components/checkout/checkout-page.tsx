@@ -53,7 +53,7 @@ export function CheckoutPage({
   const [deliveryMethod, setDeliveryMethod] =
     useState<DeliveryMethod>("nova_poshta");
   const [paymentMethod, setPaymentMethod] =
-    useState<PaymentMethod>("liqpay");
+    useState<PaymentMethod>("monopay");
   const [couponInput, setCouponInput] = useState("");
   const [appliedCouponCode, setAppliedCouponCode] = useState("");
   const [couponMessage, setCouponMessage] = useState("");
@@ -209,14 +209,14 @@ export function CheckoutPage({
       paymentProvider: getPaymentProvider(activePaymentMethod),
       paymentStatus: "pending",
       paymentId:
-        activePaymentMethod === "liqpay"
-          ? `liqpay-${orderId}`
+        activePaymentMethod === "monopay"
+          ? `monopay-${orderId}`
           : undefined,
       paymentAmount: total,
       paymentCurrency: "UAH",
       paymentRawResponse:
-        activePaymentMethod === "liqpay"
-          ? "LiqPay payment request created."
+        activePaymentMethod === "monopay"
+          ? "Monopay invoice request created."
           : "Manual payment flow.",
       status: "new",
       subtotal,
@@ -255,6 +255,10 @@ export function CheckoutPage({
         ]),
       );
       clearCart();
+      if (savedOrder.payment?.checkoutUrl) {
+        window.location.assign(savedOrder.payment.checkoutUrl);
+        return;
+      }
       router.push(`/${locale}/order-success?order=${orderForStorage.id}`);
     } catch {
       setError(dictionary.checkout.required);
@@ -748,7 +752,7 @@ function getPaymentMethodOptions(
 
   if (settings.onlinePaymentEnabled) {
     options.push({
-      value: "liqpay",
+      value: "monopay",
       label: dictionary.checkout.onlinePayment,
     });
   }
@@ -792,8 +796,8 @@ function getInitialProfileDefaults() {
 }
 
 function getPaymentProvider(paymentMethod: PaymentMethod) {
-  if (paymentMethod === "liqpay") {
-    return "liqpay" as const;
+  if (paymentMethod === "monopay") {
+    return "monopay" as const;
   }
 
   if (paymentMethod === "card_on_delivery") {

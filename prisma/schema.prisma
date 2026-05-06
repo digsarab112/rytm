@@ -66,9 +66,10 @@ enum ShipmentStatus {
 }
 
 enum PaymentProvider {
-  MANUAL @map("manual")
-  LIQPAY @map("liqpay")
-  OTHER  @map("other")
+  MANUAL        @map("manual")
+  MONOPAY       @map("monopay")
+  LEGACY_LIQPAY @map("liqpay")
+  OTHER         @map("other")
 }
 
 enum PaymentStatus {

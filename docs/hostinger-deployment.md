@@ -1,90 +1,70 @@
-# Rytm Hostinger Deployment Guide
+# Rytm VPS Deployment Guide
 
-Rytm is a Next.js application that requires a Node.js runtime and PostgreSQL.
-Do not deploy it as static files only. Use a Hostinger VPS or a Hostinger plan
-that supports Node.js applications, and connect it to PostgreSQL either on the
-same server or through a managed provider such as Supabase or Neon.
+Rytm is intended to run on one VPS with:
+
+- the Next.js Node.js app
+- PostgreSQL on localhost
+- local admin uploads in `public/uploads`
+- Nginx/HTTPS in front of the Node process
+
+Do not deploy the site as static files only. Do not use `npm run dev` for the
+public production site.
 
 ## Required Environment Variables
 
-Create a `.env` file on the server from `.env.example`. Never commit `.env`,
-`.env.local`, database dumps, customer exports, or uploaded private files.
+Create `.env` on the server from `.env.example`. Never commit `.env`, database
+dumps, customer exports, or uploaded private files.
 
 At minimum, production needs:
 
 ```env
-DATABASE_URL="paste-production-postgresql-url-here"
-DIRECT_URL="paste-migration-postgresql-url-here"
+DATABASE_URL=postgresql://rytm:CHANGE_ME@127.0.0.1:5432/rytm?schema=public
+DIRECT_URL=postgresql://rytm:CHANGE_ME@127.0.0.1:5432/rytm?schema=public
 
-AUTH_URL="https://YOUR_DOMAIN"
-NEXTAUTH_URL="https://YOUR_DOMAIN"
-AUTH_SECRET="long-random-secret"
-NEXTAUTH_SECRET="long-random-secret"
+AUTH_URL=https://YOUR_DOMAIN
+NEXTAUTH_URL=https://YOUR_DOMAIN
+AUTH_SECRET=long-random-secret
+NEXTAUTH_SECRET=long-random-secret
 
-ADMIN_EMAIL="owner@example.com"
-ADMIN_SESSION_SECRET="another-long-random-secret"
+ADMIN_EMAIL=owner@example.com
+ADMIN_SESSION_SECRET=another-long-random-secret
 
-GOOGLE_CLIENT_ID="google-client-id"
-GOOGLE_CLIENT_SECRET="google-client-secret"
+GOOGLE_CLIENT_ID=google-client-id
+GOOGLE_CLIENT_SECRET=google-client-secret
+
+PAYMENT_PROVIDER=monopay
+MONOPAY_TOKEN=
+MONOPAY_PUBLIC_BASE_URL=https://YOUR_DOMAIN
+MONOPAY_WEBHOOK_URL=https://YOUR_DOMAIN/api/payments/monopay/callback
+MONOPAY_RESULT_URL=https://YOUR_DOMAIN/api/payments/monopay/result
 
 IMAGE_STORAGE_PROVIDER=local
 LOCAL_UPLOAD_DIR=public/uploads
 LOCAL_UPLOAD_PUBLIC_BASE_URL=/uploads
 
 EMAIL_PROVIDER=smtp
-SMTP_HOST="smtp.your-provider.com"
+SMTP_HOST=smtp.your-provider.com
 SMTP_PORT=465
 SMTP_SECURE=true
-SMTP_USER="mailbox@YOUR_DOMAIN"
-SMTP_PASSWORD=""
-FROM_NAME="Rytm"
-FROM_EMAIL="mailbox@YOUR_DOMAIN"
+SMTP_USER=mailbox@YOUR_DOMAIN
+SMTP_PASSWORD=
+FROM_NAME=Rytm
+FROM_EMAIL=mailbox@YOUR_DOMAIN
 ```
-
-`ADMIN_EMAIL` is the only Google account allowed to access `/admin`.
-Password admin login is disabled in production. Do not set or rely on
-`ADMIN_PASSWORD` for a deployed store.
-
-## Google Admin Login Setup
-
-1. Open Google Cloud Console and create an OAuth client for a web application.
-2. Add this authorized redirect URI:
-
-```txt
-https://YOUR_DOMAIN/api/auth/google/callback
-```
-
-3. Put the OAuth client values into:
-
-```env
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-```
-
-4. Set `ADMIN_EMAIL` to the exact email address of the owner/admin Google
-account.
-5. Test `/admin/login`. The page should show only Google login when Google is
-configured.
 
 ## Deployment Commands
 
-Run these commands on the server:
-
 ```bash
-npm install
+npm ci
 npm run db:deploy
 npm run db:seed
 npm run build
-npm run start
+pm2 start npm --name rytm -- start
+pm2 save
 ```
 
 `npm run db:deploy` applies Prisma migrations. `npm run db:seed` loads the
-current store data: products, categories, combo offers, coupons, delivery and
-payment settings, and product images.
-
-Transactional emails use the branded templates in
-`docs/transactional-email.md`. Without email credentials, registration, order,
-password reset, and TTN emails are simulated and no real message is sent.
+current store data into the local PostgreSQL database.
 
 ## Local Uploaded Images
 
@@ -100,21 +80,17 @@ Public image URLs are served as:
 /uploads/product/...
 ```
 
-Make `public/uploads` persistent and writable on the server. If your deployment
-process replaces the whole project directory, back up this folder before
-deploying and restore it afterward, or mount it as persistent storage.
+Make `public/uploads` persistent and writable on the server. If deployments
+replace the whole project directory, back up this folder before deploying and
+restore it afterward.
 
-## Production Security Checklist
+## Security Checklist
 
 - Use HTTPS only.
-- Keep `.env`, `.env.local`, `.data`, database dumps, and uploaded customer
-files out of Git.
+- Keep `.env`, `.data`, database dumps, and `public/uploads` out of Git.
 - Use long random values for `AUTH_SECRET`, `NEXTAUTH_SECRET`, and
-`ADMIN_SESSION_SECRET`.
+  `ADMIN_SESSION_SECRET`.
 - Confirm `/admin/login` accepts only the configured Google account.
 - Keep `ADMIN_PASSWORD_LOGIN_ENABLED=false` in production.
-- Restrict database access to the app/server where possible.
-- Run a test checkout, then verify the order appears in `/admin/orders`.
-- Configure real email, SMS, or Viber providers before expecting live customer
-notifications. Without provider credentials, notification actions are simulated
-and logged only.
+- Restrict PostgreSQL to localhost.
+- Run a test checkout and verify the order appears in `/admin/orders`.

@@ -169,13 +169,13 @@ const deliveryMethodLabels: Record<Locale, Record<DeliveryMethod, string>> = {
 const paymentMethodLabels: Record<Locale, Record<PaymentMethod, string>> = {
   uk: {
     cash_on_delivery: "Післяплата",
-    liqpay: "LiqPay",
+    monopay: "Monopay",
     online_payment: "Онлайн-оплата",
     card_on_delivery: "Карткою при отриманні",
   },
   ru: {
     cash_on_delivery: "Наложенный платеж",
-    liqpay: "LiqPay",
+    monopay: "Monopay",
     online_payment: "Онлайн-оплата",
     card_on_delivery: "Картой при получении",
   },

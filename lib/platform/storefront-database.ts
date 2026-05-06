@@ -709,16 +709,18 @@ export async function upsertOrder(order: MockOrder, customerId?: string) {
       status: toPrismaPaymentStatus(order.paymentStatus),
       amount: order.paymentAmount ?? order.total,
       currency: order.paymentCurrency ?? "UAH",
+      checkoutUrl: order.paymentCheckoutUrl,
       rawPayload: { message: order.paymentRawResponse ?? "" },
     },
     create: {
       id: order.paymentId ?? `payment-${order.id}`,
       orderId: savedOrder.id,
-      provider: order.paymentProvider === "liqpay" ? PaymentProvider.LIQPAY : PaymentProvider.MANUAL,
+      provider: toPrismaPaymentProvider(order.paymentProvider),
       status: toPrismaPaymentStatus(order.paymentStatus),
       amount: order.paymentAmount ?? order.total,
       currency: order.paymentCurrency ?? "UAH",
       externalId: order.paymentId,
+      checkoutUrl: order.paymentCheckoutUrl,
       rawPayload: { message: order.paymentRawResponse ?? "" },
     },
   });
@@ -1263,7 +1265,12 @@ function mapOrder(order: {
     createdAt: Date;
     updatedAt: Date;
   }>;
-  paymentTransactions?: Array<{ id: string; externalId: string | null; rawPayload: Prisma.JsonValue }>;
+  paymentTransactions?: Array<{
+    id: string;
+    externalId: string | null;
+    checkoutUrl: string | null;
+    rawPayload: Prisma.JsonValue;
+  }>;
 }): MockOrder {
   return {
     id: order.publicId,
@@ -1275,14 +1282,15 @@ function mapOrder(order: {
     deliveryMethod: (order.deliveryMethod as DeliveryMethod) ?? "nova_poshta",
     paymentMethod: (order.paymentMethod as PaymentMethod) ?? "cash_on_delivery",
     paymentProvider: order.paymentProvider
-      ? order.paymentProvider === PaymentProvider.LIQPAY
-        ? "liqpay"
+      ? order.paymentProvider === PaymentProvider.MONOPAY
+        ? "monopay"
         : "manual"
       : undefined,
     paymentStatus: fromPrismaPaymentStatus(order.paymentStatus),
     paymentId: order.paymentTransactions?.[0]?.externalId ?? undefined,
     paymentAmount: Number(order.total),
     paymentCurrency: "UAH",
+    paymentCheckoutUrl: order.paymentTransactions?.[0]?.checkoutUrl ?? undefined,
     paymentRawResponse: getPaymentMessage(order.paymentTransactions?.[0]?.rawPayload),
     status: fromPrismaOrderStatus(order.status),
     subtotal: Number(order.subtotal),
@@ -1447,8 +1455,7 @@ function mapOrderWrite(order: MockOrder) {
     locale: order.locale,
     status: toPrismaOrderStatus(order.status),
     paymentStatus: toPrismaPaymentStatus(order.paymentStatus),
-    paymentProvider:
-      order.paymentProvider === "liqpay" ? PaymentProvider.LIQPAY : PaymentProvider.MANUAL,
+    paymentProvider: toPrismaPaymentProvider(order.paymentProvider),
     subtotal: order.subtotal,
     discountTotal: order.discountTotal ?? 0,
     couponCode: order.couponCode ?? null,
@@ -1460,6 +1467,10 @@ function mapOrderWrite(order: MockOrder) {
     city: order.city,
     warehouse: order.novaPoshtaBranch,
   };
+}
+
+function toPrismaPaymentProvider(provider: MockOrder["paymentProvider"]) {
+  return provider === "monopay" ? PaymentProvider.MONOPAY : PaymentProvider.MANUAL;
 }
 
 function toLocalizedText(value: Prisma.JsonValue, fallback: LocalizedText) {

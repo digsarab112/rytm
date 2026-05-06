@@ -155,12 +155,12 @@ export async function getCustomerProfileData(customerId: string, email: string) 
         | "pickup",
       paymentMethod: (order.paymentMethod ?? "cash_on_delivery") as
         | "cash_on_delivery"
-        | "liqpay"
+        | "monopay"
         | "online_payment"
         | "card_on_delivery",
       paymentProvider:
-        order.paymentProvider === "LIQPAY"
-          ? ("liqpay" as const)
+        order.paymentProvider === "MONOPAY"
+          ? ("monopay" as const)
           : ("manual" as const),
       paymentStatus:
         order.paymentStatus === "PAID"

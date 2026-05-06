@@ -37,7 +37,7 @@ export const deliveryMethodLabels: Record<DeliveryMethod, string> = {
 
 export const paymentMethodLabels: Record<PaymentMethod, string> = {
   cash_on_delivery: "Cash on delivery",
-  liqpay: "LiqPay",
+  monopay: "Monopay",
   online_payment: "Online payment",
   card_on_delivery: "Card on delivery",
 };

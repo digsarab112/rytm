@@ -2,7 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 
+import { PaymentProvider, PaymentStatus } from "@/lib/generated/prisma/client";
 import { getPrismaClient, isDatabaseConfigured } from "@/lib/db/prisma";
+import { createMonopayCheckout } from "@/lib/integrations/payments/monopay";
 import { sendEmailNotification } from "@/lib/integrations/email";
 import { buildOrderConfirmationEmail } from "@/lib/notifications/email-templates";
 import { upsertOrder } from "@/lib/platform/storefront-database";
@@ -22,6 +24,7 @@ export async function createCheckoutOrder({
 
   const customerId = await upsertCheckoutCustomer(order, session);
   const savedOrder = await upsertOrder(order, customerId);
+  const payment = await maybeCreateMonopayInvoice(savedOrder);
 
   await sendOrderConfirmationEmail(savedOrder);
 
@@ -29,7 +32,7 @@ export async function createCheckoutOrder({
   revalidatePath("/admin/orders");
   revalidatePath("/account");
 
-  return { ok: true as const, order: savedOrder };
+  return { ok: true as const, order: savedOrder, payment };
 }
 
 async function sendOrderConfirmationEmail(order: MockOrder) {
@@ -82,12 +85,12 @@ export async function getCheckoutOrder(orderId: string) {
         | "pickup",
       paymentMethod: (order.paymentMethod ?? "cash_on_delivery") as
         | "cash_on_delivery"
-        | "liqpay"
+        | "monopay"
         | "online_payment"
         | "card_on_delivery",
       paymentProvider:
-        order.paymentProvider === "LIQPAY"
-          ? ("liqpay" as const)
+        order.paymentProvider === "MONOPAY"
+          ? ("monopay" as const)
           : ("manual" as const),
       paymentStatus:
         order.paymentStatus === "PAID"
@@ -177,4 +180,77 @@ async function upsertCheckoutCustomer(
   });
 
   return customer.id;
+}
+
+async function maybeCreateMonopayInvoice(order: MockOrder) {
+  if (order.paymentMethod !== "monopay") {
+    return undefined;
+  }
+
+  const transactionId = order.paymentId ?? `monopay-${order.id}`;
+  const checkout = await createMonopayCheckout({
+    orderId: order.id,
+    amount: order.total,
+    currency: order.paymentCurrency ?? "UAH",
+    description: `Rytm order ${order.id}`,
+    locale: order.locale,
+  });
+
+  await updateMonopayTransaction(order.id, transactionId, checkout);
+
+  return {
+    provider: checkout.provider,
+    configured: checkout.configured,
+    checkoutUrl: checkout.checkoutUrl,
+    invoiceId: checkout.invoiceId,
+    message: checkout.message,
+  };
+}
+
+async function updateMonopayTransaction(
+  orderId: string,
+  transactionId: string,
+  checkout: Awaited<ReturnType<typeof createMonopayCheckout>>,
+) {
+  const prisma = getPrismaClient();
+  const savedOrder = await prisma.order.findUnique({
+    where: { publicId: orderId },
+    select: { id: true },
+  });
+
+  if (!savedOrder) {
+    return;
+  }
+
+  await prisma.paymentTransaction.upsert({
+    where: { id: transactionId },
+    update: {
+      provider: PaymentProvider.MONOPAY,
+      status: PaymentStatus.PENDING,
+      amount: checkout.amount,
+      currency: checkout.currency,
+      externalId: checkout.invoiceId ?? transactionId,
+      checkoutUrl: checkout.checkoutUrl,
+      rawPayload: {
+        message: checkout.message,
+        invoiceId: checkout.invoiceId,
+        pageUrl: checkout.checkoutUrl,
+      },
+    },
+    create: {
+      id: transactionId,
+      orderId: savedOrder.id,
+      provider: PaymentProvider.MONOPAY,
+      status: PaymentStatus.PENDING,
+      amount: checkout.amount,
+      currency: checkout.currency,
+      externalId: checkout.invoiceId ?? transactionId,
+      checkoutUrl: checkout.checkoutUrl,
+      rawPayload: {
+        message: checkout.message,
+        invoiceId: checkout.invoiceId,
+        pageUrl: checkout.checkoutUrl,
+      },
+    },
+  });
 }

@@ -26,7 +26,7 @@ CREATE TYPE "OrderStatus" AS ENUM ('draft', 'new', 'confirmed', 'processing', 's
 CREATE TYPE "ShipmentStatus" AS ENUM ('pending', 'ready', 'shipped', 'delivered', 'cancelled');
 
 -- CreateEnum
-CREATE TYPE "PaymentProvider" AS ENUM ('manual', 'liqpay', 'other');
+CREATE TYPE "PaymentProvider" AS ENUM ('manual', 'monopay', 'liqpay', 'other');
 
 -- CreateEnum
 CREATE TYPE "PaymentStatus" AS ENUM ('pending', 'paid', 'failed', 'cancelled', 'refunded');
