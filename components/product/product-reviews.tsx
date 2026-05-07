@@ -50,6 +50,8 @@ const labels = {
     commentRequired: "Заповніть коментар.",
     successReview: "Дякуємо. Відгук опубліковано.",
     successQuestion: "Дякуємо. Питання опубліковано.",
+    saveFailed:
+      "Не вдалося зберегти коментар. Перевірте підключення бази даних або спробуйте ще раз.",
     reviews: "відгуків",
     noRating: "Без оцінки",
     reply: "Відповісти",
@@ -80,6 +82,8 @@ const labels = {
     commentRequired: "Заполните комментарий.",
     successReview: "Спасибо. Отзыв опубликован.",
     successQuestion: "Спасибо. Вопрос опубликован.",
+    saveFailed:
+      "Не удалось сохранить комментарий. Проверьте подключение базы данных или попробуйте еще раз.",
     reviews: "отзывов",
     noRating: "Без оценки",
     reply: "Ответить",
@@ -167,14 +171,20 @@ export function ProductReviews({
     };
     const nextReviews = [review, ...reviews];
 
-    setReviews(nextReviews);
-    setError("");
-    setMessage(
-      feedbackType === "review" ? copy.successReview : copy.successQuestion,
-    );
-
     try {
-      await submitProductFeedback(review);
+      const result = await submitProductFeedback(review);
+
+      if (!result.ok) {
+        setError(copy.saveFailed);
+        setMessage("");
+        return;
+      }
+
+      setReviews(nextReviews);
+      setError("");
+      setMessage(
+        feedbackType === "review" ? copy.successReview : copy.successQuestion,
+      );
       window.localStorage.setItem(
         ADMIN_REVIEWS_STORAGE_KEY,
         JSON.stringify(nextReviews),
@@ -184,14 +194,8 @@ export function ProductReviews({
       setFeedbackType("review");
       setRating(5);
     } catch {
-      window.localStorage.setItem(
-        ADMIN_REVIEWS_STORAGE_KEY,
-        JSON.stringify(nextReviews),
-      );
-      window.dispatchEvent(new Event("storage"));
-      form.reset();
-      setFeedbackType("review");
-      setRating(5);
+      setError(copy.saveFailed);
+      setMessage("");
     }
   }
 
@@ -239,24 +243,34 @@ export function ProductReviews({
         : review,
     );
 
-    setReviews(nextReviews);
-    setReplyMessages((current) => ({
-      ...current,
-      [reviewId]: copy.replySuccess,
-    }));
-    setReplyingToId(null);
-
     try {
-      await submitProductFeedbackReply(productId, reply);
-    } catch {
-      // The local admin store remains the fallback when a database is unavailable.
-    } finally {
+      const result = await submitProductFeedbackReply(productId, reply);
+
+      if (!result.ok) {
+        setReplyErrors((current) => ({
+          ...current,
+          [reviewId]: copy.saveFailed,
+        }));
+        return;
+      }
+
+      setReviews(nextReviews);
+      setReplyMessages((current) => ({
+        ...current,
+        [reviewId]: copy.replySuccess,
+      }));
+      setReplyingToId(null);
       window.localStorage.setItem(
         ADMIN_REVIEWS_STORAGE_KEY,
         JSON.stringify(nextReviews),
       );
       window.dispatchEvent(new Event("storage"));
       form.reset();
+    } catch {
+      setReplyErrors((current) => ({
+        ...current,
+        [reviewId]: copy.saveFailed,
+      }));
     }
   }
 
