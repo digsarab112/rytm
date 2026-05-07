@@ -19,14 +19,30 @@ export async function createCheckoutOrder({
   session?: CustomerSession | null;
 }) {
   if (!isDatabaseConfigured()) {
-    return { ok: false as const, order };
+    return {
+      ok: false as const,
+      order,
+      error: "database-not-configured" as const,
+    };
   }
 
-  const customerId = await upsertCheckoutCustomer(order, session);
-  const savedOrder = await upsertOrder(order, customerId);
-  const payment = await maybeCreateMonopayInvoice(savedOrder);
+  let savedOrder: MockOrder;
+  let payment: Awaited<ReturnType<typeof maybeCreateMonopayInvoice>>;
 
-  await sendOrderConfirmationEmail(savedOrder);
+  try {
+    const customerId = await upsertCheckoutCustomer(order, session);
+    savedOrder = await upsertOrder(order, customerId);
+    payment = await maybeCreateMonopayInvoice(savedOrder);
+  } catch (error) {
+    console.error("Checkout order save failed", error);
+    return { ok: false as const, order, error: "save-failed" as const };
+  }
+
+  try {
+    await sendOrderConfirmationEmail(savedOrder);
+  } catch (error) {
+    console.error("Checkout confirmation email failed", error);
+  }
 
   revalidatePath("/", "layout");
   revalidatePath("/admin/orders");
@@ -147,7 +163,6 @@ async function upsertCheckoutCustomer(
     where: { email: normalizedEmail },
     update: {
       name: order.customerName,
-      phone: order.phone,
       profile: {
         upsert: {
           create: {
@@ -167,7 +182,6 @@ async function upsertCheckoutCustomer(
       id: session?.customerId,
       email: normalizedEmail,
       name: order.customerName,
-      phone: order.phone,
       locale: order.locale,
       profile: {
         create: {

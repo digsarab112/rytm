@@ -242,6 +242,10 @@ export function CheckoutPage({
         order,
         session: getCustomerSession(),
       });
+      if (!savedOrder.ok) {
+        setError(getCheckoutSaveError(locale));
+        return;
+      }
       const orderForStorage = savedOrder.order ?? order;
       const existingOrders = JSON.parse(
         window.localStorage.getItem(ORDERS_STORAGE_KEY) ?? "[]",
@@ -261,7 +265,7 @@ export function CheckoutPage({
       }
       router.push(`/${locale}/order-success?order=${orderForStorage.id}`);
     } catch {
-      setError(dictionary.checkout.required);
+      setError(getCheckoutSaveError(locale));
     }
   }
 
@@ -809,6 +813,12 @@ function getPaymentProvider(paymentMethod: PaymentMethod) {
   }
 
   return "manual" as const;
+}
+
+function getCheckoutSaveError(locale: Locale) {
+  return locale === "uk"
+    ? "Не вдалося створити замовлення. Перевірте дані або спробуйте ще раз."
+    : "Не удалось создать заказ. Проверьте данные или попробуйте еще раз.";
 }
 
 function createInitialShipments(

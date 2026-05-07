@@ -645,126 +645,154 @@ async function saveCustomers(value: unknown) {
 
 export async function upsertOrder(order: MockOrder, customerId?: string) {
   const prisma = getPrismaClient();
-  const customer = customerId
-    ? await prisma.customer.findUnique({ where: { id: customerId } })
-    : await prisma.customer.findUnique({ where: { email: order.email.toLowerCase() } });
+  return prisma.$transaction(async (tx) => {
+    const customer = customerId
+      ? await tx.customer.findUnique({ where: { id: customerId } })
+      : await tx.customer.findUnique({ where: { email: order.email.toLowerCase() } });
+    const productIds = Array.from(
+      new Set(order.items.map((item) => item.productId).filter(Boolean)),
+    );
+    const supplierIds = Array.from(
+      new Set(
+        [
+          ...order.items.map((item) => item.supplierId),
+          ...(order.shipments ?? []).map((shipment) => shipment.supplierId),
+        ].filter((id): id is string => Boolean(id && id !== "unassigned")),
+      ),
+    );
+    const [existingProducts, existingSuppliers] = await Promise.all([
+      tx.product.findMany({
+        where: { id: { in: productIds } },
+        select: { id: true },
+      }),
+      tx.supplier.findMany({
+        where: { id: { in: supplierIds } },
+        select: { id: true },
+      }),
+    ]);
+    const existingProductIds = new Set(existingProducts.map((item) => item.id));
+    const existingSupplierIds = new Set(existingSuppliers.map((item) => item.id));
+    const getExistingProductId = (id: string | undefined) =>
+      id && existingProductIds.has(id) ? id : undefined;
+    const getExistingSupplierId = (id: string | undefined) =>
+      id && existingSupplierIds.has(id) ? id : undefined;
 
-  const orderData = mapOrderWrite(order);
-  const customerRelation = customer
-    ? { connect: { id: customer.id } }
-    : { disconnect: true };
-  const savedOrder = await prisma.order.upsert({
-    where: { publicId: order.id },
-    update: { ...orderData, customer: customerRelation },
-    create: {
-      publicId: order.id,
-      ...orderData,
-      ...(customer ? { customer: { connect: { id: customer.id } } } : {}),
-    },
-  });
+    const orderData = mapOrderWrite(order);
+    const customerRelation = customer
+      ? { connect: { id: customer.id } }
+      : { disconnect: true };
+    const savedOrder = await tx.order.upsert({
+      where: { publicId: order.id },
+      update: { ...orderData, customer: customerRelation },
+      create: {
+        publicId: order.id,
+        ...orderData,
+        ...(customer ? { customer: { connect: { id: customer.id } } } : {}),
+      },
+    });
 
-  await prisma.orderItem.deleteMany({ where: { orderId: savedOrder.id } });
-  if (order.items.length > 0) {
-    await prisma.orderItem.createMany({
-      data: order.items.map((item) => ({
+    await tx.orderItem.deleteMany({ where: { orderId: savedOrder.id } });
+    if (order.items.length > 0) {
+      await tx.orderItem.createMany({
+        data: order.items.map((item) => ({
+          orderId: savedOrder.id,
+          productId: getExistingProductId(item.productId),
+          supplierId: getExistingSupplierId(item.supplierId),
+          productSlug: item.productId,
+          productNameUk: item.nameUk,
+          productNameRu: item.nameRu,
+          sku: item.sku,
+          variantId: item.variantId,
+          variantLabelUk: item.variantLabelUk,
+          variantLabelRu: item.variantLabelRu,
+          variantSku: item.variantSku,
+          quantity: item.quantity,
+          unitPrice: item.price,
+          lineTotal: item.lineTotal,
+        })),
+      });
+    }
+
+    await tx.shipment.deleteMany({ where: { orderId: savedOrder.id } });
+    for (const shipment of order.shipments ?? []) {
+      await tx.shipment.create({
+        data: {
+          orderId: savedOrder.id,
+          supplierId: getExistingSupplierId(shipment.supplierId),
+          status: toPrismaShipmentStatus(shipment.deliveryStatus),
+          fulfillmentType: "manual",
+          carrier: shipment.deliveryProvider,
+          city: order.city,
+          warehouse: order.novaPoshtaBranch,
+          ttn: shipment.ttnNumber,
+          notes: shipment.notificationLog.join("\n"),
+        },
+      });
+    }
+
+    await tx.paymentTransaction.upsert({
+      where: { id: order.paymentId ?? `payment-${order.id}` },
+      update: {
+        status: toPrismaPaymentStatus(order.paymentStatus),
+        amount: order.paymentAmount ?? order.total,
+        currency: order.paymentCurrency ?? "UAH",
+        checkoutUrl: order.paymentCheckoutUrl,
+        rawPayload: { message: order.paymentRawResponse ?? "" },
+      },
+      create: {
+        id: order.paymentId ?? `payment-${order.id}`,
         orderId: savedOrder.id,
-        productId: item.productId,
-        supplierId: item.supplierId,
+        provider: toPrismaPaymentProvider(order.paymentProvider),
+        status: toPrismaPaymentStatus(order.paymentStatus),
+        amount: order.paymentAmount ?? order.total,
+        currency: order.paymentCurrency ?? "UAH",
+        externalId: order.paymentId,
+        checkoutUrl: order.paymentCheckoutUrl,
+        rawPayload: { message: order.paymentRawResponse ?? "" },
+      },
+    });
+
+    return mapOrder({
+      ...savedOrder,
+      items: order.items.map((item) => ({
+        id: `${savedOrder.id}-${item.productId}-${item.variantId ?? "base"}-${item.sku}`,
+        orderId: savedOrder.id,
+        productId: getExistingProductId(item.productId) ?? null,
+        supplierId: getExistingSupplierId(item.supplierId) ?? null,
         productSlug: item.productId,
         productNameUk: item.nameUk,
         productNameRu: item.nameRu,
         sku: item.sku,
-        variantId: item.variantId,
-        variantLabelUk: item.variantLabelUk,
-        variantLabelRu: item.variantLabelRu,
-        variantSku: item.variantSku,
+        variantId: item.variantId ?? null,
+        variantLabelUk: item.variantLabelUk ?? null,
+        variantLabelRu: item.variantLabelRu ?? null,
+        variantSku: item.variantSku ?? null,
         quantity: item.quantity,
-        unitPrice: item.price,
-        lineTotal: item.lineTotal,
+        unitPrice: new Prisma.Decimal(item.price),
+        salePrice: null,
+        lineTotal: new Prisma.Decimal(item.lineTotal),
+        createdAt: new Date(),
+        updatedAt: new Date(),
       })),
-    });
-  }
-
-  await prisma.shipment.deleteMany({ where: { orderId: savedOrder.id } });
-  for (const shipment of order.shipments ?? []) {
-    await prisma.shipment.create({
-      data: {
+      shipments: (order.shipments ?? []).map((shipment) => ({
+        id: shipment.id,
         orderId: savedOrder.id,
-        supplierId:
-          shipment.supplierId === "unassigned" ? undefined : shipment.supplierId,
+        supplierId: getExistingSupplierId(shipment.supplierId) ?? null,
         status: toPrismaShipmentStatus(shipment.deliveryStatus),
         fulfillmentType: "manual",
         carrier: shipment.deliveryProvider,
         city: order.city,
         warehouse: order.novaPoshtaBranch,
         ttn: shipment.ttnNumber,
+        trackingUrl: null,
         notes: shipment.notificationLog.join("\n"),
-      },
+        shippedAt: null,
+        deliveredAt: null,
+        createdAt: new Date(shipment.createdAt),
+        updatedAt: new Date(shipment.updatedAt),
+      })),
+      paymentTransactions: [],
     });
-  }
-
-  await prisma.paymentTransaction.upsert({
-    where: { id: order.paymentId ?? `payment-${order.id}` },
-    update: {
-      status: toPrismaPaymentStatus(order.paymentStatus),
-      amount: order.paymentAmount ?? order.total,
-      currency: order.paymentCurrency ?? "UAH",
-      checkoutUrl: order.paymentCheckoutUrl,
-      rawPayload: { message: order.paymentRawResponse ?? "" },
-    },
-    create: {
-      id: order.paymentId ?? `payment-${order.id}`,
-      orderId: savedOrder.id,
-      provider: toPrismaPaymentProvider(order.paymentProvider),
-      status: toPrismaPaymentStatus(order.paymentStatus),
-      amount: order.paymentAmount ?? order.total,
-      currency: order.paymentCurrency ?? "UAH",
-      externalId: order.paymentId,
-      checkoutUrl: order.paymentCheckoutUrl,
-      rawPayload: { message: order.paymentRawResponse ?? "" },
-    },
-  });
-
-  return mapOrder({
-    ...savedOrder,
-    items: order.items.map((item) => ({
-      id: `${savedOrder.id}-${item.productId}-${item.variantId ?? "base"}-${item.sku}`,
-      orderId: savedOrder.id,
-      productId: item.productId,
-      supplierId: item.supplierId ?? null,
-      productSlug: item.productId,
-      productNameUk: item.nameUk,
-      productNameRu: item.nameRu,
-      sku: item.sku,
-      variantId: item.variantId ?? null,
-      variantLabelUk: item.variantLabelUk ?? null,
-      variantLabelRu: item.variantLabelRu ?? null,
-      variantSku: item.variantSku ?? null,
-      quantity: item.quantity,
-      unitPrice: new Prisma.Decimal(item.price),
-      salePrice: null,
-      lineTotal: new Prisma.Decimal(item.lineTotal),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    })),
-    shipments: (order.shipments ?? []).map((shipment) => ({
-      id: shipment.id,
-      orderId: savedOrder.id,
-      supplierId: shipment.supplierId,
-      status: toPrismaShipmentStatus(shipment.deliveryStatus),
-      fulfillmentType: "manual",
-      carrier: shipment.deliveryProvider,
-      city: order.city,
-      warehouse: order.novaPoshtaBranch,
-      ttn: shipment.ttnNumber,
-      trackingUrl: null,
-      notes: shipment.notificationLog.join("\n"),
-      shippedAt: null,
-      deliveredAt: null,
-      createdAt: new Date(shipment.createdAt),
-      updatedAt: new Date(shipment.updatedAt),
-    })),
-    paymentTransactions: [],
   });
 }
 
