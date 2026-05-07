@@ -91,6 +91,24 @@ pm2 restart rytm
 Run `npm run db:seed` only when initializing or intentionally refreshing store
 data.
 
+After the first update that includes the deploy script, later deployments can
+use one command from the server:
+
+```bash
+npm run deploy:server
+```
+
+The script pulls `origin/main`, installs dependencies, applies migrations,
+builds the app, and restarts the `rytm-web` systemd service. If the project
+path or service name is different, run it with overrides:
+
+```bash
+APP_DIR=/home/sites/rytm SERVICE_NAME=rytm-web npm run deploy:server
+```
+
+Use `RUN_SEED=true npm run deploy:server` only for first-time setup or when you
+intentionally want to refresh seed data.
+
 ## Persistent Local Files
 
 Keep these paths private and persistent on the server:

@@ -66,6 +66,30 @@ pm2 save
 `npm run db:deploy` applies Prisma migrations. `npm run db:seed` loads the
 current store data into the local PostgreSQL database.
 
+## Short Update Command
+
+After the server has pulled the version that includes the deploy script, later
+updates can use one command from the project directory:
+
+```bash
+npm run deploy:server
+```
+
+It runs `git pull --ff-only`, `npm ci`, `npm run db:deploy`,
+`npm run build`, and `systemctl restart rytm-web`.
+
+If the project path or service name is different:
+
+```bash
+APP_DIR=/home/sites/rytm SERVICE_NAME=rytm-web npm run deploy:server
+```
+
+For first-time seed data only:
+
+```bash
+RUN_SEED=true npm run deploy:server
+```
+
 ## Local Uploaded Images
 
 Local uploads are written to:
