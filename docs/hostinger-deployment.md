@@ -76,7 +76,8 @@ npm run deploy:server
 ```
 
 It runs `git pull --ff-only`, `npm ci`, `npm run db:deploy`,
-`npm run build`, and `systemctl restart rytm-web`.
+`npm run db:repair`, `npm run db:doctor`, `npm run build`, and
+`systemctl restart rytm-web`.
 
 If the project path or service name is different:
 

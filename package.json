@@ -13,6 +13,8 @@
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma generate && prisma db seed",
     "db:studio": "prisma studio",
+    "db:repair": "node scripts/repair-production-db.mjs",
+    "db:doctor": "node scripts/production-db-doctor.mjs",
     "deploy:server": "bash scripts/deploy-production.sh"
   },
   "dependencies": {

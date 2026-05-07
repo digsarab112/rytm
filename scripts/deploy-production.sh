@@ -44,6 +44,12 @@ npm ci
 log "Applying database migrations"
 npm run db:deploy
 
+log "Repairing known safe database drift"
+npm run db:repair
+
+log "Database check"
+npm run db:doctor
+
 if [ "$RUN_SEED" = "true" ]; then
   log "Seeding database"
   npm run db:seed

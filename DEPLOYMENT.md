@@ -99,8 +99,9 @@ npm run deploy:server
 ```
 
 The script pulls `origin/main`, installs dependencies, applies migrations,
-builds the app, and restarts the `rytm-web` systemd service. If the project
-path or service name is different, run it with overrides:
+repairs known safe database drift, prints a short database check, builds the
+app, and restarts the `rytm-web` systemd service. If the project path or
+service name is different, run it with overrides:
 
 ```bash
 APP_DIR=/home/sites/rytm SERVICE_NAME=rytm-web npm run deploy:server
