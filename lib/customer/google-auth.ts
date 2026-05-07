@@ -29,9 +29,12 @@ export function createCustomerGoogleOAuthState() {
   return crypto.randomBytes(24).toString("base64url");
 }
 
+export function getConfiguredCustomerAuthBaseUrl(origin: string) {
+  return process.env.AUTH_URL || process.env.NEXTAUTH_URL || origin;
+}
+
 export function getCustomerGoogleRedirectUri(origin: string) {
-  const configuredBaseUrl =
-    process.env.AUTH_URL || process.env.NEXTAUTH_URL || origin;
+  const configuredBaseUrl = getConfiguredCustomerAuthBaseUrl(origin);
 
   return `${configuredBaseUrl.replace(
     /\/$/,
