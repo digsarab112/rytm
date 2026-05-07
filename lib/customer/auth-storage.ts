@@ -25,7 +25,7 @@ type CustomerLoginInput = {
 type CustomerAuthResult =
   | { ok: true; session: CustomerSession }
   | { ok: true; admin: true }
-  | { ok: false; error: "exists" | "missing" | "invalid" | "weak" };
+  | { ok: false; error: "exists" | "missing" | "invalid" | "weak" | "fallback" };
 
 export function readCustomerAccounts() {
   return readJson<CustomerAccount[]>(CUSTOMER_ACCOUNTS_STORAGE_KEY) ?? [];
@@ -72,7 +72,7 @@ export async function registerCustomer({
   }
 
   if (!canUseBrowserAuthFallback()) {
-    return { ok: false, error: "invalid" };
+    return { ok: false, error: "fallback" };
   }
 
   const accounts = readCustomerAccounts();
@@ -127,7 +127,7 @@ export async function loginCustomer({
   }
 
   if (!canUseBrowserAuthFallback()) {
-    return { ok: false, error: "missing" };
+    return { ok: false, error: "fallback" };
   }
 
   const accounts = readCustomerAccounts();

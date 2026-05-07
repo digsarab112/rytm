@@ -52,7 +52,7 @@ export function CustomerRegisterForm({
     setIsPending(false);
 
     if (!result.ok) {
-      setError(copy[result.error]);
+      setError(getCustomerAuthErrorText(copy, locale, result.error));
       return;
     }
 
@@ -147,7 +147,7 @@ export function CustomerLoginForm({
     setIsPending(false);
 
     if (!result.ok) {
-      setError(copy[result.error]);
+      setError(getCustomerAuthErrorText(copy, locale, result.error));
       return;
     }
 
@@ -216,7 +216,13 @@ function GoogleLoginOption({
   enabled: boolean;
 }) {
   if (!enabled) {
-    return null;
+    return (
+      <div className="rounded-lg border border-border bg-background px-4 py-3 text-sm text-muted-foreground">
+        {locale === "uk"
+          ? "Вхід через Google з’явиться після підключення бази даних і Google OAuth на сервері."
+          : "Вход через Google появится после подключения базы данных и Google OAuth на сервере."}
+      </div>
+    );
   }
 
   return (
@@ -263,4 +269,18 @@ function ErrorMessage({ text }: { text: string }) {
       {text}
     </div>
   );
+}
+
+function getCustomerAuthErrorText(
+  copy: CustomerCopy,
+  locale: Locale,
+  error: "exists" | "missing" | "invalid" | "weak" | "fallback",
+) {
+  if (error === "fallback") {
+    return locale === "uk"
+      ? "Реєстрація або вхід тимчасово недоступні. Потрібно перевірити базу даних та серверні налаштування."
+      : "Регистрация или вход временно недоступны. Нужно проверить базу данных и серверные настройки.";
+  }
+
+  return copy[error];
 }
