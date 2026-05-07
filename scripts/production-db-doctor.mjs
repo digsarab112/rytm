@@ -38,6 +38,36 @@ const checks = [
     sql: `SELECT COUNT(*)::int AS count FROM "product_feedback"`,
   },
   {
+    label: "public product visibility",
+    sql: `SELECT
+            COUNT(*)::int AS total_products,
+            COUNT(*) FILTER (
+              WHERE "publicationStatus" = 'published'
+            )::int AS published_products,
+            COUNT(*) FILTER (
+              WHERE "publicationStatus" = 'published'
+                AND "status" = 'active'
+                AND "stock" > 0
+            )::int AS visible_in_home_sections
+          FROM "products"`,
+  },
+  {
+    label: "latest products",
+    sql: `SELECT
+            p."nameUk",
+            p."slug",
+            p."status",
+            p."publicationStatus",
+            p."stock",
+            c."nameUk" AS category,
+            c."isActive" AS category_active,
+            p."updatedAt"
+          FROM "products" p
+          LEFT JOIN "categories" c ON c."id" = p."categoryId"
+          ORDER BY p."updatedAt" DESC
+          LIMIT 10`,
+  },
+  {
     label: "latest migrations",
     sql: `SELECT migration_name, finished_at
           FROM "_prisma_migrations"
