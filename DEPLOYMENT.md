@@ -110,6 +110,14 @@ APP_DIR=/home/sites/rytm SERVICE_NAME=rytm-web npm run deploy:server
 Use `RUN_SEED=true npm run deploy:server` only for first-time setup or when you
 intentionally want to refresh seed data.
 
+If only the homepage is blank after connecting the production database, seed the
+homepage sections without touching products, orders, or reviews:
+
+```bash
+npm run db:seed:homepage
+systemctl restart rytm-web
+```
+
 ## Persistent Local Files
 
 Keep these paths private and persistent on the server:

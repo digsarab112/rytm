@@ -12,6 +12,7 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma generate && prisma db seed",
+    "db:seed:homepage": "tsx scripts/seed-homepage-sections.ts",
     "db:studio": "prisma studio",
     "db:repair": "node scripts/repair-production-db.mjs",
     "db:doctor": "node scripts/production-db-doctor.mjs",

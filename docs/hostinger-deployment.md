@@ -91,6 +91,14 @@ For first-time seed data only:
 RUN_SEED=true npm run deploy:server
 ```
 
+If the production database already has products but the homepage is blank, seed
+only the homepage sections:
+
+```bash
+npm run db:seed:homepage
+systemctl restart rytm-web
+```
+
 ## Local Uploaded Images
 
 Local uploads are written to:
