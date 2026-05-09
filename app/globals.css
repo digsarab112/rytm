@@ -113,7 +113,6 @@ a {
   overscroll-behavior-x: contain;
   scroll-padding-inline: 0;
   scroll-snap-type: x mandatory;
-  touch-action: pan-x;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -175,6 +174,13 @@ a {
 .hero-media-visual {
   animation: hero-media-drift 7s ease-in-out infinite alternate;
   transform-origin: center;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .hero-media-visual {
+    animation: none;
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

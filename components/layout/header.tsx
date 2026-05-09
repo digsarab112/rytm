@@ -64,10 +64,16 @@ export function Header({
   );
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/95 lg:bg-background/90 lg:backdrop-blur-xl">
       <div className="border-b border-border/70 bg-card/70">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2 text-xs leading-5 text-muted-foreground sm:px-6 lg:px-8">
           <p className="min-w-0 truncate">{settings.slogan[locale]}</p>
+          <LanguageSwitcher
+            activeLocale={locale}
+            label={dictionary.common.language}
+            compact
+            className="shrink-0 sm:hidden"
+          />
           <Link
             href={`tel:${settings.contactPhone.replaceAll(" ", "")}`}
             className="hidden shrink-0 font-semibold text-foreground hover:text-primary sm:block"
@@ -116,6 +122,7 @@ export function Header({
           <LanguageSwitcher
             activeLocale={locale}
             label={dictionary.common.language}
+            className="hidden sm:inline-flex"
           />
           <AccountLinkButton locale={locale} label={accountLabel} />
           <CartButton locale={locale} label={dictionary.actions.cart} />

@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 type LanguageSwitcherProps = {
   activeLocale: Locale;
   label: string;
+  className?: string;
+  compact?: boolean;
 };
 
 function getLocalizedHref(pathname: string, locale: Locale) {
@@ -25,20 +27,26 @@ function getLocalizedHref(pathname: string, locale: Locale) {
 export function LanguageSwitcher({
   activeLocale,
   label,
+  className,
+  compact = false,
 }: LanguageSwitcherProps) {
   const pathname = usePathname();
 
   return (
     <nav
       aria-label={label}
-      className="inline-flex items-center rounded-full border border-border bg-card p-1 shadow-sm"
+      className={cn(
+        "inline-flex items-center rounded-full border border-border bg-card p-1 shadow-sm",
+        className,
+      )}
     >
       {locales.map((locale) => (
         <Link
           key={locale}
           href={getLocalizedHref(pathname, locale)}
           className={cn(
-            "rounded-full px-2.5 py-1.5 text-xs font-semibold uppercase leading-none transition-colors sm:px-3",
+            "rounded-full text-xs font-semibold uppercase leading-none transition-colors",
+            compact ? "px-2 py-1" : "px-2.5 py-1.5 sm:px-3",
             activeLocale === locale
               ? "bg-primary text-primary-foreground"
               : "text-muted-foreground hover:bg-muted hover:text-foreground",
