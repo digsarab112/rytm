@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.1.1
+
+- Let signed-in customers edit the display name used for product reviews and
+  questions.
+- Added show/hide password controls to customer login and registration forms.
+- Made admin pages prefer server-loaded database data over stale browser
+  storage and stopped order sync from deleting orders that are missing from a
+  stale admin browser snapshot.
+- Updated the VPS deployment script to use a lower-memory dependency install.
+- Extended `npm run db:doctor` with a latest orders check.
+
 ## v2.1.0
 
 - Improved the mobile header by moving the language switcher into the top
@@ -29,6 +40,7 @@ git fetch --tags
 git checkout v1.0.0
 git checkout v2.0.0
 git checkout v2.1.0
+git checkout v2.1.1
 ```
 
 For server deployment, restart the production process after checking out the

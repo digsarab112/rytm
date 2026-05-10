@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LogIn, Mail, UserPlus } from "lucide-react";
+import { Eye, EyeOff, LogIn, Mail, UserPlus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -90,15 +90,11 @@ export function CustomerRegisterForm({
             {copy.email}
             <Input name="email" type="email" autoComplete="email" required />
           </label>
-          <label className="grid gap-2 text-sm font-semibold text-foreground">
-            {copy.password}
-            <Input
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              required
-            />
-          </label>
+          <PasswordField
+            locale={locale}
+            copy={copy}
+            autoComplete="new-password"
+          />
           <Button type="submit" size="lg" disabled={isPending}>
             <UserPlus />
             {isPending ? copy.createAccount : copy.createAccount}
@@ -174,15 +170,11 @@ export function CustomerLoginForm({
             {copy.email}
             <Input name="email" type="email" autoComplete="email" required />
           </label>
-          <label className="grid gap-2 text-sm font-semibold text-foreground">
-            {copy.password}
-            <Input
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-            />
-          </label>
+          <PasswordField
+            locale={locale}
+            copy={copy}
+            autoComplete="current-password"
+          />
           <Button type="submit" size="lg" disabled={isPending}>
             <LogIn />
             {isPending ? copy.signIn : copy.signIn}
@@ -206,6 +198,52 @@ export function CustomerLoginForm({
       )}
     </div>
   );
+}
+
+function PasswordField({
+  locale,
+  copy,
+  autoComplete,
+}: {
+  locale: Locale;
+  copy: CustomerCopy;
+  autoComplete: "current-password" | "new-password";
+}) {
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleLabel = getPasswordToggleLabel(locale, isVisible);
+  const Icon = isVisible ? EyeOff : Eye;
+
+  return (
+    <label className="grid gap-2 text-sm font-semibold text-foreground">
+      {copy.password}
+      <span className="relative">
+        <Input
+          name="password"
+          type={isVisible ? "text" : "password"}
+          autoComplete={autoComplete}
+          required
+          className="pr-12"
+        />
+        <button
+          type="button"
+          aria-label={toggleLabel}
+          title={toggleLabel}
+          onClick={() => setIsVisible((current) => !current)}
+          className="absolute right-2 top-1/2 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          <Icon className="size-4" />
+        </button>
+      </span>
+    </label>
+  );
+}
+
+function getPasswordToggleLabel(locale: Locale, isVisible: boolean) {
+  if (locale === "uk") {
+    return isVisible ? "Приховати пароль" : "Показати пароль";
+  }
+
+  return isVisible ? "Скрыть пароль" : "Показать пароль";
 }
 
 function GoogleLoginOption({

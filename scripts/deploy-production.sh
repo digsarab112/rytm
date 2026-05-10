@@ -39,7 +39,7 @@ git fetch "$REMOTE" "$BRANCH"
 git pull --ff-only "$REMOTE" "$BRANCH"
 
 log "Installing dependencies"
-npm ci
+npm install --no-audit --no-fund
 
 log "Applying database migrations"
 npm run db:deploy

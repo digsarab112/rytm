@@ -537,12 +537,19 @@ function CustomerIdentityFields({
     <div className="grid gap-3">
       {signedCustomer ? (
         <div className="rounded-lg border border-secondary bg-secondary/40 px-4 py-3 text-sm text-secondary-foreground">
-          <p className="font-semibold">{copy.signedInAs}</p>
-          <p className="mt-1 break-words text-base font-bold leading-6">
-            {signedCustomer.name}
-          </p>
-          <input type="hidden" name="customerName" value={signedCustomer.name} />
+          <label className="grid gap-2 font-semibold">
+            {copy.signedInAs}
+            <Input
+              name="customerName"
+              defaultValue={signedCustomer.name}
+              required
+              className="border-secondary bg-card text-base font-bold text-secondary-foreground"
+            />
+          </label>
           <input type="hidden" name="customerEmail" value={signedCustomer.email} />
+          <p className="mt-2 break-words text-xs text-secondary-foreground/75">
+            {signedCustomer.email}
+          </p>
         </div>
       ) : (
         <div className="grid gap-3">

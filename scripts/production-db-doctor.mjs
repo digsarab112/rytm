@@ -34,6 +34,20 @@ const checks = [
     sql: `SELECT COUNT(*)::int AS count FROM "orders"`,
   },
   {
+    label: "latest orders",
+    sql: `SELECT
+            "publicId",
+            "customerEmail",
+            "customerPhone",
+            "status",
+            "paymentStatus",
+            "total",
+            "createdAt"
+          FROM "orders"
+          ORDER BY "createdAt" DESC
+          LIMIT 10`,
+  },
+  {
     label: "product feedback count",
     sql: `SELECT COUNT(*)::int AS count FROM "product_feedback"`,
   },

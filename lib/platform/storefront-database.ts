@@ -611,14 +611,10 @@ async function saveCoupons(value: unknown) {
 
 async function saveOrders(value: unknown) {
   const orders = value as MockOrder[];
-  const prisma = getPrismaClient();
-  const ids = new Set(orders.map((order) => order.id));
 
   for (const order of orders) {
     await upsertOrder(order);
   }
-
-  await prisma.order.deleteMany({ where: { publicId: { notIn: [...ids] } } });
 }
 
 async function saveCustomers(value: unknown) {
